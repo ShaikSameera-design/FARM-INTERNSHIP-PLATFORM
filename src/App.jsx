@@ -1,8 +1,7 @@
-
-import CollegeDashboard from "./pages/College/CollegeDashboard";
+import StudentDashboard from "./pages/Student/StudentDashboard";
 
 function App() {
-  return <CollegeDashboard />;
+  return <StudentDashboard />;
 }
 
 export default App;

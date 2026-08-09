@@ -1,0 +1,22 @@
+.dashboard{
+    display:flex;
+}
+
+.main-content{
+    margin-left:260px;
+    width:100%;
+    min-height:100vh;
+    padding:40px;
+    background:#F5F7FA;
+}
+
+.main-content h1{
+    font-size:36px;
+    color:#1F2937;
+    margin-bottom:10px;
+}
+
+.main-content p{
+    font-size:18px;
+    color:#6B7280;
+}
