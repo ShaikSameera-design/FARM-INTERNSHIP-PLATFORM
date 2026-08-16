@@ -1,56 +1,61 @@
-.sidebar{
-    width:260px;
-    height:100vh;
-    background:#1F2937;
-    color:white;
-    position:fixed;
-    left:0;
-    top:0;
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
-    padding:30px 20px;
+.student-sidebar {
+  width: 250px;
+  min-height: 100vh;
+  background: #123524;
+  color: white;
+  padding: 25px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 20;
 }
 
-.logo h2{
-    font-size:24px;
-    margin-bottom:5px;
+.brand { display: flex; align-items: center; gap: 11px; padding: 5px 10px 34px; }
+.brand-mark {
+  width: 42px; height: 42px; border-radius: 12px; background: #3fa35b;
+  display: grid; place-items: center; font-size: 13px; font-weight: 850;
 }
-
-.logo p{
-    color:#9CA3AF;
-    font-size:14px;
+.brand strong { display: block; font-size: 18px; letter-spacing: -.2px; }
+.brand span { display: block; color: #b8c9be; font-size: 10px; margin-top: 3px; }
+.nav-label { color: #6f8d7b; font-size: 9px; letter-spacing: 1.5px; font-weight: 800; padding: 0 12px 10px; }
+.student-nav { display: flex; flex-direction: column; gap: 5px; }
+.nav-item {
+  display: flex; align-items: center; gap: 12px; padding: 12px 13px;
+  color: #b8c9be; border-radius: 9px; font-size: 13px; font-weight: 550;
+  transition: .2s ease;
 }
-
-.menu{
-    display:flex;
-    flex-direction:column;
-    gap:15px;
+.nav-item:hover { background: #214a34; color: white; }
+.nav-item.active { background: #3a9653; color: white; box-shadow: 0 5px 12px rgba(10, 50, 26, .15); }
+.sidebar-footer { border-top: 1px solid #315341; padding-top: 17px; }
+.sidebar-user { display: flex; align-items: center; gap: 10px; padding: 0 7px 14px; }
+.sidebar-user strong { display: block; font-size: 12px; }
+.sidebar-user span { display: block; color: #91ab9b; font-size: 10px; margin-top: 3px; }
+.avatar {
+  width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
+  background: #e7f4ea; color: #2f8147; font-size: 12px; font-weight: 800;
 }
-
-.menu a{
-    text-decoration:none;
-    color:white;
-    padding:14px 18px;
-    border-radius:10px;
-    transition:.3s;
-    font-size:16px;
+.avatar.small { width: 36px; height: 36px; background: #3a9653; color: white; }
+.logout-btn {
+  width: 100%; background: transparent; color: #b8c9be; display: flex; align-items: center;
+  gap: 10px; padding: 10px 8px; border-radius: 8px; font-size: 12px; text-align: left;
 }
-
-.menu a:hover{
-    background:#374151;
+.logout-btn:hover { background: #214a34; color: white; }
+@media (max-width: 850px) {
+  .student-sidebar { width: 74px; padding: 20px 10px; }
+  .brand { justify-content: center; padding-left: 0; padding-right: 0; }
+  .brand > div:last-child, .nav-label, .nav-item span, .sidebar-user > div:last-child, .logout-btn { display: none; }
+  .nav-item { justify-content: center; padding: 12px; }
+  .sidebar-user { justify-content: center; padding: 0 0 12px; }
+  .student-main { margin-left: 74px; padding: 22px 20px 40px; }
 }
-
-.active{
-    background:#16A34A;
-}
-
-.logout button{
-    width:100%;
-    padding:14px;
-    border:none;
-    border-radius:10px;
-    background:#DC2626;
-    color:white;
-    font-size:16px;
+@media (max-width: 560px) {
+  .student-sidebar { width: 100%; min-height: auto; height: 66px; bottom: auto; padding: 8px 12px; flex-direction: row; align-items: center; }
+  .brand { padding: 0; }
+  .student-nav { flex-direction: row; }
+  .sidebar-footer { border: 0; padding: 0; }
+  .sidebar-user { display: none; }
+  .nav-item { padding: 10px; }
+  .student-main { margin-left: 0; padding: 90px 15px 30px; }
 }

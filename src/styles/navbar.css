@@ -1,35 +1,26 @@
-.navbar{
-    background:#ffffff;
-    height:80px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:0 30px;
-    border-radius:12px;
-    box-shadow:0 2px 12px rgba(0,0,0,.08);
-    margin-bottom:30px;
+.student-topbar {
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  margin-bottom: 23px;
 }
-
-.profile{
-    display:flex;
-    align-items:center;
-    gap:12px;
+.page-heading span { color: #839088; font-size: 10px; font-weight: 700; letter-spacing: 1px; }
+.page-heading h1 { margin: 4px 0 3px; font-size: 25px; line-height: 1.2; letter-spacing: -.5px; color: #1d2d23; }
+.page-heading p { margin: 0; color: #7b867f; font-size: 12px; }
+.topbar-actions { display: flex; align-items: center; gap: 12px; }
+.icon-btn {
+  width: 39px; height: 39px; display: grid; place-items: center; border: 1px solid #e2e9e4;
+  background: white; color: #64736a; border-radius: 10px; position: relative;
 }
-
-.profile img{
-    width:50px;
-    height:50px;
-    border-radius:50%;
-    object-fit:cover;
-}
-
-.profile h4{
-    margin:0;
-    font-size:16px;
-}
-
-.profile p{
-    margin:2px 0 0;
-    color:#666;
-    font-size:14px;
+.icon-btn:hover { background: #f0f7f1; color: #2f8147; }
+.notification i { position: absolute; width: 7px; height: 7px; background: #e74d4d; border: 2px solid white; border-radius: 50%; right: 8px; top: 7px; }
+.top-profile { display: flex; align-items: center; gap: 9px; padding-left: 7px; }
+.top-profile strong { display: block; font-size: 12px; }
+.top-profile span { display: block; font-size: 10px; color: #89958e; margin-top: 2px; }
+@media (max-width: 600px) {
+  .page-heading p { display: none; }
+  .top-profile > div:last-child { display: none; }
+  .student-topbar { margin-bottom: 18px; }
 }
