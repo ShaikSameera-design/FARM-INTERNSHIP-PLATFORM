@@ -1,4 +1,4 @@
-import React from "react";
+
 import "./CollegeProfile.css";
 
 function CollegeProfile() {

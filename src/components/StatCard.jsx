@@ -1,15 +1,16 @@
-import "../styles/cards.css";
+import { FiArrowUpRight } from "react-icons/fi";
 
-function StatCard({ title, value, color }) {
+function StatCard({ icon: Icon, label, value, note, tone = "green" }) {
   return (
-    <div className="card">
-      <h3>{value}</h3>
-      <p>{title}</p>
-      <div
-        className="line"
-        style={{ background: color }}
-      ></div>
-    </div>
+    <article className={`kpi-card ${tone}`}>
+      <div className="kpi-top">
+        <div className="kpi-icon"><Icon size={20} /></div>
+        <span className="kpi-link"><FiArrowUpRight size={15} /></span>
+      </div>
+      <span className="kpi-label">{label}</span>
+      <strong className="kpi-value">{value}</strong>
+      <span className="kpi-note">{note}</span>
+    </article>
   );
 }
 
