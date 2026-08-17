@@ -88,6 +88,38 @@
     background: #3a9653;
     color: white;
   }
+
+  .college-subnav {
+    margin-top: 8px;
+    padding: 10px 8px 0;
+    border-top: 1px solid rgba(184, 201, 190, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .subnav-item {
+    border: none;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.04);
+    color: #dfeae3;
+    padding: 9px 12px;
+    text-align: left;
+    cursor: pointer;
+    font-size: 12px;
+    transition: 0.2s;
+  }
+
+  .subnav-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+  }
+
+  .subnav-item.active {
+    background: #dff6e8;
+    color: #123524;
+    font-weight: 700;
+  }
   
   .college-sidebar-bottom {
     margin-top: auto;

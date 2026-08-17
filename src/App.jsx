@@ -1,7 +1,11 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import CollegeDashboard from "./pages/College/CollegeDashboard";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import AdminLogin from "./pages/Admin/AdminLogin";
+import CommunicationPage from "./pages/Communication/CommunicationPage";
+import StudentPage from "./pages/Student/student";
+import FarmerPage from "./pages/Farmer/farmer";
+import PublicPage from "./pages/Public/public";
 
 function App() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
@@ -19,8 +23,28 @@ function App() {
     return () => window.removeEventListener("popstate", handleLocationChange);
   }, []);
 
-  // Check if current route is /admin
-  const isAdminRoute = currentPath.toLowerCase().startsWith("/admin");
+  const lowerPath = currentPath.toLowerCase();
+  const isAdminRoute = lowerPath.startsWith("/admin");
+  const isCommunicationRoute = lowerPath === "/communication";
+  const isStudentRoute = lowerPath === "/student";
+  const isFarmerRoute = lowerPath === "/farmer";
+  const isPublicRoute = lowerPath === "/public";
+
+  if (isCommunicationRoute) {
+    return <CommunicationPage />;
+  }
+
+  if (isStudentRoute) {
+    return <StudentPage />;
+  }
+
+  if (isFarmerRoute) {
+    return <FarmerPage />;
+  }
+
+  if (isPublicRoute) {
+    return <PublicPage />;
+  }
 
   if (isAdminRoute) {
     if (!isAdminAuthenticated) {
