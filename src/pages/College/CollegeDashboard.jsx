@@ -187,7 +187,7 @@ function CollegeDashboard() {
 
             <div>
               <strong>College Admin</strong>
-              <span>ABC College</span>
+              <span>RGUKT-ONGOLE College</span>
             </div>
           </div>
 
