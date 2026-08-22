@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import CollegeDashboard from "./pages/College/CollegeDashboard";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import AdminLogin from "./pages/Admin/AdminLogin";
+import FarmerDashboard from "./pages/Farmer/FarmerDashboard";
 
 function App() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
@@ -21,6 +22,7 @@ function App() {
 
   // Check if current route is /admin
   const isAdminRoute = currentPath.toLowerCase().startsWith("/admin");
+  const isFarmerRoute = currentPath.toLowerCase().startsWith("/farmer");
 
   if (isAdminRoute) {
     if (!isAdminAuthenticated) {
@@ -43,6 +45,10 @@ function App() {
       />
     );
   }
+if (isFarmerRoute) {
+  return <FarmerDashboard />;
+}
+
 
   // Non-admin route view (Default Public/College Portal)
   return <CollegeDashboard />;
