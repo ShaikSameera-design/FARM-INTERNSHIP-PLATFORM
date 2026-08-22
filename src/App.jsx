@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import CollegeDashboard from "./pages/College/CollegeDashboard";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import AdminLogin from "./pages/Admin/AdminLogin";
+import CommunicationPage from "./pages/Communication/CommunicationPage";
+import StudentPage from "./pages/Student/student";
+import FarmerPage from "./pages/Farmer/farmer";
 import FarmerDashboard from "./pages/Farmer/FarmerDashboard";
+import PublicPage from "./pages/Public/public";
 
 function App() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
@@ -13,16 +17,39 @@ function App() {
   useEffect(() => {
     const handleLocationChange = () => {
       setCurrentPath(window.location.pathname);
-      setIsAdminAuthenticated(sessionStorage.getItem("admin_authenticated") === "true");
+      setIsAdminAuthenticated(
+        sessionStorage.getItem("admin_authenticated") === "true"
+      );
     };
 
     window.addEventListener("popstate", handleLocationChange);
+
     return () => window.removeEventListener("popstate", handleLocationChange);
   }, []);
 
-  // Check if current route is /admin
-  const isAdminRoute = currentPath.toLowerCase().startsWith("/admin");
-  const isFarmerRoute = currentPath.toLowerCase().startsWith("/farmer");
+  const lowerPath = currentPath.toLowerCase();
+
+  const isAdminRoute = lowerPath.startsWith("/admin");
+  const isCommunicationRoute = lowerPath === "/communication";
+  const isStudentRoute = lowerPath === "/student";
+  const isFarmerRoute = lowerPath === "/farmer";
+  const isPublicRoute = lowerPath === "/public";
+
+  if (isCommunicationRoute) {
+    return <CommunicationPage />;
+  }
+
+  if (isStudentRoute) {
+    return <StudentPage />;
+  }
+
+  if (isPublicRoute) {
+    return <PublicPage />;
+  }
+
+  if (isFarmerRoute) {
+  return <FarmerDashboard />;
+}
 
   if (isAdminRoute) {
     if (!isAdminAuthenticated) {
@@ -45,12 +72,7 @@ function App() {
       />
     );
   }
-if (isFarmerRoute) {
-  return <FarmerDashboard />;
-}
 
-
-  // Non-admin route view (Default Public/College Portal)
   return <CollegeDashboard />;
 }
 
