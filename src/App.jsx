@@ -5,6 +5,7 @@ import AdminLogin from "./pages/Admin/AdminLogin";
 import CommunicationPage from "./pages/Communication/CommunicationPage";
 import StudentPage from "./pages/Student/student";
 import FarmerPage from "./pages/Farmer/farmer";
+import FarmerDashboard from "./pages/Farmer/FarmerDashboard";
 import PublicPage from "./pages/Public/public";
 
 function App() {
@@ -16,14 +17,18 @@ function App() {
   useEffect(() => {
     const handleLocationChange = () => {
       setCurrentPath(window.location.pathname);
-      setIsAdminAuthenticated(sessionStorage.getItem("admin_authenticated") === "true");
+      setIsAdminAuthenticated(
+        sessionStorage.getItem("admin_authenticated") === "true"
+      );
     };
 
     window.addEventListener("popstate", handleLocationChange);
+
     return () => window.removeEventListener("popstate", handleLocationChange);
   }, []);
 
   const lowerPath = currentPath.toLowerCase();
+
   const isAdminRoute = lowerPath.startsWith("/admin");
   const isCommunicationRoute = lowerPath === "/communication";
   const isStudentRoute = lowerPath === "/student";
@@ -38,13 +43,13 @@ function App() {
     return <StudentPage />;
   }
 
-  if (isFarmerRoute) {
-    return <FarmerPage />;
-  }
-
   if (isPublicRoute) {
     return <PublicPage />;
   }
+
+  if (isFarmerRoute) {
+  return <FarmerDashboard />;
+}
 
   if (isAdminRoute) {
     if (!isAdminAuthenticated) {
@@ -68,7 +73,6 @@ function App() {
     );
   }
 
-  // Non-admin route view (Default Public/College Portal)
   return <CollegeDashboard />;
 }
 
