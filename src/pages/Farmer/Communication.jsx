@@ -74,7 +74,7 @@ function Communication() {
     <div className="farmer-page">
 
       <div className="page-header">
-        <p className="page-label">COMMUNICATION</p>
+        
 
         <h1>Communication</h1>
 
