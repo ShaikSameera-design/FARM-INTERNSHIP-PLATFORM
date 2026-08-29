@@ -10,8 +10,8 @@ function FarmerPage() {
   ]);
 
   const [applicants, setApplicants] = useState([
-    { id: 101, student: "Anjali Reddy", college: "ABC College", rollNo: "2023-AGRI-042", status: "Approved", appliedDate: "12 Aug 2026" },
-    { id: 102, student: "Ravi Teja", college: "ABC College", rollNo: "2023-AGRI-015", status: "Pending", appliedDate: "14 Aug 2026" },
+    { id: 101, student: "Anjali Reddy", college: "Rgukt College", rollNo: "2023-AGRI-042", status: "Approved", appliedDate: "12 Aug 2026" },
+    { id: 102, student: "Ravi Teja", college: "Rgukt College", rollNo: "2023-AGRI-015", status: "Pending", appliedDate: "14 Aug 2026" },
     { id: 103, student: "Meghana S", college: "Agri Tech Institute", rollNo: "2023-AGRI-088", status: "Pending", appliedDate: "15 Aug 2026" },
   ]);
 

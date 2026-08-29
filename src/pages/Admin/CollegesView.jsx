@@ -4,11 +4,11 @@ function CollegesView() {
   const [colleges, setColleges] = useState([
     {
       id: 1,
-      name: "ABC Agricultural Engineering College",
-      code: "ABC-AGRI-01",
+      name: "Rgukt Agricultural Engineering College",
+      code: "Rgukt-AGRI-01",
       principal: "Dr. Anjali Reddy",
       phone: "+91 94401 55667",
-      email: "principal@abccollege.edu",
+      email: "principal@Rguktcollege.edu",
       location: "Guntur, AP",
       enrolledStudents: 42,
       activePlacements: 28,

@@ -187,7 +187,7 @@ function CollegeDashboard() {
 
             <div>
               <strong>College Admin</strong>
-              <span>RGUKT-ONGOLE College</span>
+              <span>Rgukt-ONGOLE College</span>
             </div>
           </div>
 
@@ -205,7 +205,7 @@ function CollegeDashboard() {
 
           <div>
             <p className="welcome-text">Welcome back 👋</p>
-            <h1>ABC College Dashboard</h1>
+            <h1>Rgukt College Dashboard</h1>
           </div>
 
           <div className="topbar-actions">

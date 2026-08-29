@@ -24,7 +24,7 @@ function Profile() {
         </section>
         <section className="panel profile-card">
           <div className="profile-card-title"><div><FiBookOpen /></div><span><strong>Academic Information</strong><small>Your education details</small></span></div>
-          <div className="profile-info"><span>College</span><strong>ABC College of Engineering</strong></div>
+          <div className="profile-info"><span>College</span><strong>Rgukt College of Engineering</strong></div>
           <div className="profile-info"><span>Department</span><strong>Computer Science & Engineering</strong></div>
           <div className="profile-info"><span>Year</span><strong>3rd Year</strong></div>
         </section>

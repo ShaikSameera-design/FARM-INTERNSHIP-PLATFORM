@@ -85,7 +85,7 @@ function CollegeProfile() {
 
             <div className="information-item">
               <span>Short Name</span>
-              <strong>RGUKT Ongole</strong>
+              <strong>Rgukt Ongole</strong>
             </div>
 
             <div className="information-item">
@@ -100,7 +100,7 @@ function CollegeProfile() {
 
             <div className="information-item">
               <span>College ID</span>
-              <strong>RGUKT-ONGOLE</strong>
+              <strong>Rgukt-ONGOLE</strong>
             </div>
 
           </div>
@@ -132,7 +132,7 @@ function CollegeProfile() {
               <span>Campus Address</span>
 
               <strong>
-                RGUKT Ongole Campus,
+                Rgukt Ongole Campus,
                 <br />
                 Kurnool Road,
                 <br />
@@ -150,7 +150,7 @@ function CollegeProfile() {
               <span>Official Website</span>
 
               <strong>
-                www.rguktong.ac.in
+                www.Rguktong.ac.in
               </strong>
 
             </div>
