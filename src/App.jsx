@@ -4,7 +4,7 @@ import AdminDashboard from "./pages/Admin/AdminDashboard";
 import AdminLogin from "./pages/Admin/AdminLogin";
 import CommunicationPage from "./pages/Communication/CommunicationPage";
 import StudentPage from "./pages/Student/student";
-import FarmerPage from "./pages/Farmer/farmer";
+import FarmerPage from "./pages/Farmer/FarmerDashboard";
 import PublicPage from "./pages/Public/public";
 
 function App() {

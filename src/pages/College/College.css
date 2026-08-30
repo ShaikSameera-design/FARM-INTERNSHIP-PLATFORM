@@ -215,11 +215,39 @@ button {
 }
 
 .portal-switcher {
-  display: none !important;
+  display: flex !important;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .portal-badge-btn {
-  display: none !important;
+  display: inline-flex !important;
+  align-items: center;
+  padding: 7px 13px;
+  border-radius: 20px;
+  border: 1px solid rgba(17, 53, 40, 0.12);
+  background: #ffffff;
+  color: #2b3b33;
+  font-weight: 600;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+
+.portal-badge-btn:hover {
+  background: #eef7f2;
+  border-color: #1b8d5c;
+  color: #115738;
+  transform: translateY(-1px);
+}
+
+.portal-badge-btn.active {
+  border-color: #1b8d5c;
+  background: linear-gradient(135deg, #e8f8ee, #d2f2df);
+  color: #0f5a3a;
+  font-weight: 700;
 }
 
 .notification-btn {
@@ -829,9 +857,9 @@ button {
   }
 }
 
-/* RESPONSIVE */
+/* RESPONSIVE DESIGN - MOBILE, TABLET, LAPTOP, PC */
 
-@media (max-width: 1100px) {
+@media (max-width: 1200px) {
   .stats-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -845,36 +873,39 @@ button {
   }
 }
 
-@media (max-width: 800px) {
+@media (max-width: 992px) {
   .college-sidebar {
-    width: 80px;
-    padding-inline: 12px;
+    width: 75px;
+    padding: 20px 10px;
   }
 
   .college-logo {
     justify-content: center;
-    padding: 8px 4px 22px;
+    padding: 8px 4px 18px;
   }
 
   .college-logo h2,
   .college-logo span,
-  .college-nav button {
-    font-size: 0;
+  .college-user strong,
+  .college-user span {
+    display: none;
   }
 
   .college-nav button {
     justify-content: center;
-    padding: 12px 10px;
+    padding: 12px;
+    font-size: 0;
   }
 
   .college-nav button span {
-    font-size: 18px;
+    font-size: 20px;
+    margin: 0;
   }
 
   .college-main {
-    margin-left: 80px;
-    width: calc(100% - 80px);
-    padding: 20px;
+    margin-left: 75px;
+    width: calc(100% - 75px);
+    padding: 22px 20px;
   }
 
   .dashboard-columns {
@@ -883,15 +914,32 @@ button {
 
   .progress-row {
     grid-template-columns: 1fr;
+    gap: 10px;
   }
 
   .college-topbar {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  .topbar-actions {
+    width: 100%;
+    justify-content: flex-start;
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 640px) {
+  .college-sidebar {
+    width: 60px;
+    padding: 14px 6px;
+  }
+
+  .college-main {
+    margin-left: 60px;
+    width: calc(100% - 60px);
+    padding: 14px;
+  }
+
   .stats-grid,
   .student-grid,
   .college-activity-grid {
@@ -899,7 +947,7 @@ button {
   }
 
   .hero-section {
-    padding: 24px 22px;
+    padding: 22px 18px;
     display: block;
   }
 
@@ -907,11 +955,23 @@ button {
     display: none;
   }
 
-  .college-main {
-    padding: 16px;
+  .college-topbar {
+    padding: 14px;
+    border-radius: 16px;
   }
 
-  .college-topbar {
-    padding: 16px 18px;
+  .college-topbar h1 {
+    font-size: 22px;
+  }
+
+  .portal-switcher {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .student-modal,
+  .admin-modal {
+    width: 95vw;
+    padding: 20px;
   }
 }
