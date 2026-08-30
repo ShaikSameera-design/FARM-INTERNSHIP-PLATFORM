@@ -25,10 +25,16 @@ function App() {
 
   const lowerPath = currentPath.toLowerCase();
   const isAdminRoute = lowerPath.startsWith("/admin");
+  const isLandingRoute = lowerPath === "/" || lowerPath === "/public";
+  const isCollegeRoute = lowerPath === "/college";
   const isCommunicationRoute = lowerPath === "/communication";
   const isStudentRoute = lowerPath === "/student";
   const isFarmerRoute = lowerPath === "/farmer";
   const isPublicRoute = lowerPath === "/public";
+
+  if (isLandingRoute) {
+    return <PublicPage />;
+  }
 
   if (isCommunicationRoute) {
     return <CommunicationPage />;
@@ -40,6 +46,10 @@ function App() {
 
   if (isFarmerRoute) {
     return <FarmerPage />;
+  }
+
+  if (isCollegeRoute) {
+    return <CollegeDashboard />;
   }
 
   if (isPublicRoute) {
@@ -68,8 +78,8 @@ function App() {
     );
   }
 
-  // Non-admin route view (Default Public/College Portal)
-  return <CollegeDashboard />;
+  // Fallback for any unmatched route
+  return <PublicPage />;
 }
 
 export default App;

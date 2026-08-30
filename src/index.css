@@ -1,7 +1,21 @@
 :root {
-  --sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --sans: "Inter", "Segoe UI", Arial, sans-serif;
+  --heading: "Inter", "Segoe UI", Arial, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
+  --bg: #f3f8f4;
+  --panel: rgba(255, 255, 255, 0.82);
+  --panel-strong: #ffffff;
+  --sidebar: linear-gradient(180deg, #103a27 0%, #0a2a1d 100%);
+  --sidebar-soft: #1c533b;
+  --primary: #1a8f5a;
+  --primary-bright: #2cc678;
+  --primary-deep: #0d5d40;
+  --secondary: #e6f7ee;
+  --text: #17322a;
+  --muted: #6c7e74;
+  --line: rgba(17, 53, 40, 0.08);
+  --shadow-soft: 0 16px 45px rgba(17, 48, 35, 0.08);
+  --shadow-card: 0 12px 28px rgba(14, 40, 30, 0.08);
 
   font-family: var(--sans);
   font-synthesis: none;
@@ -15,8 +29,14 @@ html, body {
   padding: 0;
   width: 100%;
   min-height: 100vh;
-  background-color: #f4f7f5;
-  color: #17261f;
+  background:
+    radial-gradient(circle at top left, rgba(83, 180, 121, 0.16), transparent 24%),
+    linear-gradient(180deg, #f7faf7 0%, #edf4ef 100%);
+  color: var(--text);
+}
+
+body {
+  min-height: 100vh;
 }
 
 #root {
@@ -29,6 +49,10 @@ html, body {
   flex-direction: column;
   box-sizing: border-box;
   text-align: left;
+}
+
+button, input, textarea, select {
+  font-family: inherit;
 }
 
 p {
