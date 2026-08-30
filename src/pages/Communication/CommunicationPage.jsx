@@ -50,7 +50,7 @@ function CommunicationPage() {
             <div className="user-avatar">C</div>
             <div>
               <strong>College Admin</strong>
-              <span>ABC College</span>
+              <span>Rgukt College</span>
             </div>
           </div>
         </div>

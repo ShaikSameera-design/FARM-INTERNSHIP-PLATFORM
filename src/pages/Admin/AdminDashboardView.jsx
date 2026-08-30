@@ -62,7 +62,7 @@ function AdminDashboardView({ onNavigateToUsers }) {
     {
       id: 2,
       title: "College Account Verified",
-      description: "ABC Engineering College verification approved by Admin.",
+      description: "Rgukt Engineering College verification approved by Admin.",
       time: "2 hours ago",
       icon: "✓",
       category: "approval"

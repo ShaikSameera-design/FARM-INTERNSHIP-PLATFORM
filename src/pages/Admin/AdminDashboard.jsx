@@ -14,7 +14,7 @@ function AdminDashboard({ onLogout }) {
 
   const notificationList = [
     { id: 1, text: "Sunrise Organic Farms applied for farm partner verification.", time: "10m ago" },
-    { id: 2, text: "ABC College registered 12 new student accounts.", time: "2h ago" },
+    { id: 2, text: "Rgukt College registered 12 new student accounts.", time: "2h ago" },
     { id: 3, text: "System security scan completed with 0 errors.", time: "1d ago" }
   ];
 

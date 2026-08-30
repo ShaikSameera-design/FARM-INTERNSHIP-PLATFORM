@@ -74,9 +74,9 @@ export const attendanceRecords = [
 export const studentProfileData = {
   name: "Anjali Reddy",
   rollNo: "2023-AGRI-042",
-  email: "anjali.reddy@abccollege.edu",
+  email: "anjali.reddy@Rguktcollege.edu",
   phone: "+91 98765 43210",
-  college: "ABC College of Agricultural Sciences",
+  college: "Rgukt College of Agricultural Sciences",
   branch: "B.Sc (Hons) Agriculture",
   year: "3rd Year (Semester VI)",
   cgpa: "8.75 / 10.0",

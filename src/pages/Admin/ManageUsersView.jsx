@@ -6,9 +6,9 @@ function ManageUsersView() {
     {
       id: 1,
       name: "Anjali Reddy",
-      email: "anjali.reddy@abccollege.edu",
+      email: "anjali.reddy@Rguktcollege.edu",
       role: "Student",
-      organization: "ABC Engineering College",
+      organization: "Rgukt Engineering College",
       phone: "+91 98765 11111",
       joinDate: "12 May 2026",
       status: "Active",
@@ -39,9 +39,9 @@ function ManageUsersView() {
     {
       id: 4,
       name: "Ravi Teja",
-      email: "ravi.teja@abccollege.edu",
+      email: "ravi.teja@Rguktcollege.edu",
       role: "Student",
-      organization: "ABC Engineering College",
+      organization: "Rgukt Engineering College",
       phone: "+91 98765 22222",
       joinDate: "10 May 2026",
       status: "Active",
@@ -61,9 +61,9 @@ function ManageUsersView() {
     {
       id: 6,
       name: "Meghana S",
-      email: "meghana.s@abccollege.edu",
+      email: "meghana.s@Rguktcollege.edu",
       role: "Student",
-      organization: "ABC Engineering College",
+      organization: "Rgukt Engineering College",
       phone: "+91 98765 33333",
       joinDate: "18 May 2026",
       status: "Suspended",
@@ -83,9 +83,9 @@ function ManageUsersView() {
     {
       id: 8,
       name: "Priya Kumar",
-      email: "priya.k@abccollege.edu",
+      email: "priya.k@Rguktcollege.edu",
       role: "Student",
-      organization: "ABC Engineering College",
+      organization: "Rgukt Engineering College",
       phone: "+91 98765 44444",
       joinDate: "22 May 2026",
       status: "Active",
@@ -419,7 +419,7 @@ function ManageUsersView() {
                   <label>Organization / College / Farm Name</label>
                   <input
                     type="text"
-                    placeholder="e.g. Green Organic Farms / ABC College"
+                    placeholder="e.g. Green Organic Farms / Rgukt College"
                     value={newUser.organization}
                     onChange={(e) => setNewUser({ ...newUser, organization: e.target.value })}
                   />
