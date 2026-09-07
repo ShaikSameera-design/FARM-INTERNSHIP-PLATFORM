@@ -1704,13 +1704,12 @@
   .farmer-nav a {
     justify-content: center;
     padding: 12px;
-    font-size: 0;
+    font-size: 20px;
   }
 
   .farmer-nav button span,
   .farmer-nav a span {
-    font-size: 20px;
-    margin: 0;
+    display: none;
   }
 
   .farmer-main {

@@ -112,16 +112,6 @@ function CommunicationSection() {
     );
   };
 
-  const verifyCertificate = (id) => {
-    setCertificates((prev) =>
-      prev.map((item) =>
-        item.id === id
-          ? { ...item, status: item.status === "Pending" ? "Verified" : item.status }
-          : item
-      )
-    );
-  };
-
   const summary = useMemo(() => {
     const unreadCount = notifications.filter((item) => item.unread).length;
     const pendingFeedback = feedbackItems.filter((item) => item.status === "Pending").length;
@@ -270,16 +260,6 @@ function CommunicationSection() {
                 <strong>{item.issued}</strong>
               </div>
 
-              <div className="certificate-actions">
-                <span className={`status-pill ${item.status === "Pending" ? "pending" : "responded"}`}>
-                  {item.status}
-                </span>
-                {item.status === "Pending" && (
-                  <button type="button" className="action-button" onClick={() => verifyCertificate(item.id)}>
-                    Verify
-                  </button>
-                )}
-              </div>
             </div>
           ))}
         </div>

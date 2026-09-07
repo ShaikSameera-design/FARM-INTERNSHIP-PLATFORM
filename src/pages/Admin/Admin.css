@@ -1338,8 +1338,11 @@
     min-width: 75px;
     padding: 18px 10px;
   }
-  .admin-logo h2, .admin-logo span, .admin-nav button span:not(.nav-icon), .admin-user-info {
+  .admin-logo h2, .admin-logo span, .admin-nav button span:not(.nav-icon), .admin-user-info, .admin-logout-sidebar-btn span {
     display: none;
+  }
+  .admin-nav button, .admin-logout-sidebar-btn {
+    justify-content: center;
   }
   .admin-main {
     margin-left: 75px;

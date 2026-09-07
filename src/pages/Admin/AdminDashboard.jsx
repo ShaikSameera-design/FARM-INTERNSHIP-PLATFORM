@@ -143,7 +143,7 @@ function AdminDashboard({ onLogout }) {
                 type="button"
                 className="portal-badge-btn"
                 onClick={() => {
-                  window.history.pushState({}, "", "/");
+                  window.history.pushState({}, "", "/login/college");
                   window.dispatchEvent(new PopStateEvent("popstate"));
                 }}
                 style={{ padding: "6px 12px", borderRadius: "20px", border: "1px solid #e5e7eb", background: "#ffffff", color: "#374151", fontWeight: 500, fontSize: "12px", cursor: "pointer" }}
@@ -154,29 +154,19 @@ function AdminDashboard({ onLogout }) {
                 type="button"
                 className="portal-badge-btn"
                 onClick={() => {
-                  window.history.pushState({}, "", "/student");
+                  window.history.pushState({}, "", "/login/student");
                   window.dispatchEvent(new PopStateEvent("popstate"));
                 }}
                 style={{ padding: "6px 12px", borderRadius: "20px", border: "1px solid #e5e7eb", background: "#ffffff", color: "#374151", fontWeight: 500, fontSize: "12px", cursor: "pointer" }}
               >
                 👨‍🎓 Student
               </button>
+
               <button
                 type="button"
                 className="portal-badge-btn"
                 onClick={() => {
-                  window.history.pushState({}, "", "/communication");
-                  window.dispatchEvent(new PopStateEvent("popstate"));
-                }}
-                style={{ padding: "6px 12px", borderRadius: "20px", border: "1px solid #e5e7eb", background: "#ffffff", color: "#374151", fontWeight: 500, fontSize: "12px", cursor: "pointer" }}
-              >
-                💬 Communication
-              </button>
-              <button
-                type="button"
-                className="portal-badge-btn"
-                onClick={() => {
-                  window.history.pushState({}, "", "/farmer");
+                  window.history.pushState({}, "", "/login/farmer");
                   window.dispatchEvent(new PopStateEvent("popstate"));
                 }}
                 style={{ padding: "6px 12px", borderRadius: "20px", border: "1px solid #e5e7eb", background: "#ffffff", color: "#374151", fontWeight: 500, fontSize: "12px", cursor: "pointer" }}

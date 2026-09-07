@@ -64,40 +64,6 @@ function CommunicationPage() {
           </div>
 
           <div className="topbar-actions">
-            <div className="portal-switcher" style={{ display: "flex", gap: "8px", alignItems: "center", marginRight: "12px" }}>
-              <button
-                type="button"
-                className="portal-badge-btn"
-                onClick={() => navigate("/")}
-                style={{ padding: "6px 12px", borderRadius: "20px", border: "1px solid #e5e7eb", background: "#ffffff", color: "#374151", fontWeight: 500, fontSize: "12px", cursor: "pointer" }}
-              >
-                🏫 College
-              </button>
-              <button
-                type="button"
-                className="portal-badge-btn"
-                onClick={() => navigate("/student")}
-                style={{ padding: "6px 12px", borderRadius: "20px", border: "1px solid #e5e7eb", background: "#ffffff", color: "#374151", fontWeight: 500, fontSize: "12px", cursor: "pointer" }}
-              >
-                👨‍🎓 Student
-              </button>
-              <button
-                type="button"
-                className="portal-badge-btn active"
-                onClick={() => navigate("/communication")}
-                style={{ padding: "6px 12px", borderRadius: "20px", border: "1px solid #10b981", background: "#ecfdf5", color: "#047857", fontWeight: 600, fontSize: "12px", cursor: "pointer" }}
-              >
-                💬 Communication
-              </button>
-              <button
-                type="button"
-                className="portal-badge-btn"
-                onClick={() => navigate("/farmer")}
-                style={{ padding: "6px 12px", borderRadius: "20px", border: "1px solid #e5e7eb", background: "#ffffff", color: "#374151", fontWeight: 500, fontSize: "12px", cursor: "pointer" }}
-              >
-                🚜 Farmer
-              </button>
-            </div>
             <button className="notification-btn" type="button">
               🔔
               <span></span>

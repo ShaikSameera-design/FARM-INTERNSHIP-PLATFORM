@@ -283,14 +283,30 @@
 }
 
 @media (max-width: 768px) {
+  .communication-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
   .communication-summary,
   .feedback-grid {
     grid-template-columns: 1fr;
   }
 
+  .communication-tabs {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .communication-tabs button {
+    width: 100%;
+  }
+
   .certificate-card {
     flex-direction: column;
     align-items: flex-start;
+    gap: 12px;
   }
 
   .message-topline,
