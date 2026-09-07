@@ -1,6 +1,10 @@
+import { useState } from "react";
 import "../College/College.css";
 
 function PublicPage() {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const currentPath = window.location.pathname.toLowerCase();
 
   const navigateToRole = (path) => {
@@ -17,6 +21,7 @@ function PublicPage() {
       path: "/college",
       accent: "#ecfdf5",
       loginPath: "/login/college",
+      signupPath: "/signup/college",
     },
     {
       title: "Student",
@@ -26,6 +31,7 @@ function PublicPage() {
       path: "/student",
       accent: "#eff6ff",
       loginPath: "/login/student",
+      signupPath: "/signup/student",
     },
     {
       title: "Farmer",
@@ -35,6 +41,7 @@ function PublicPage() {
       path: "/farmer",
       accent: "#f0fdf4",
       loginPath: "/login/farmer",
+      signupPath: "/signup/farmer",
     },
   ];
 
@@ -68,8 +75,56 @@ function PublicPage() {
     },
   };
 
+  const signupConfig = {
+    college: {
+      title: "College Registration",
+      subtitle: "Register your institution to coordinate student internships and verify programs.",
+      accent: "#10b981",
+      accentSoft: "#ecfdf5",
+      icon: "🏫",
+      route: "/college",
+      fields: [
+        { label: "Institution Name", type: "text", placeholder: "e.g. RGUKT Nuzvid", id: "instName" },
+        { label: "Official College Email", type: "email", placeholder: "admin@college.edu.in", id: "email" },
+        { label: "AISHE / Reg Code", type: "text", placeholder: "C-12345", id: "regCode" },
+        { label: "Contact Person", type: "text", placeholder: "Prof. Ramesh Kumar", id: "contactPerson" },
+      ],
+    },
+    student: {
+      title: "Student Registration",
+      subtitle: "Create your student account to explore and apply for verified farm internships.",
+      accent: "#3b82f6",
+      accentSoft: "#eff6ff",
+      icon: "👨‍🎓",
+      route: "/student",
+      fields: [
+        { label: "Full Name", type: "text", placeholder: "Anjali Reddy", id: "fullName" },
+        { label: "Student Email", type: "email", placeholder: "student@example.com", id: "email" },
+        { label: "College / University", type: "text", placeholder: "RGUKT Ongole", id: "college" },
+        { label: "Roll Number / ID", type: "text", placeholder: "CSE001", id: "rollNo" },
+      ],
+    },
+    farmer: {
+      title: "Farmer Registration",
+      subtitle: "Register your farm to post internships, review applicants, and mentor interns.",
+      accent: "#16a34a",
+      accentSoft: "#f0fdf4",
+      icon: "🚜",
+      route: "/farmer",
+      fields: [
+        { label: "Farmer / Farm Name", type: "text", placeholder: "Green Valley Organic Farms", id: "farmName" },
+        { label: "Email Address", type: "email", placeholder: "farmer@greenvalley.com", id: "email" },
+        { label: "Phone Number", type: "tel", placeholder: "+91 98765 43210", id: "phone" },
+        { label: "Farm Location / District", type: "text", placeholder: "Guntur, Andhra Pradesh", id: "location" },
+      ],
+    },
+  };
+
   const loginRole = currentPath.startsWith("/login/") ? currentPath.replace("/login/", "") : "";
+  const signupRole = currentPath.startsWith("/signup/") ? currentPath.replace("/signup/", "") : (currentPath === "/signup" ? "student" : "");
+
   const activeRole = roleConfig[loginRole] || null;
+  const activeSignupRole = signupConfig[signupRole] || null;
 
   if (activeRole) {
     return (
@@ -177,8 +232,8 @@ function PublicPage() {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            background: activeRole.accentSoft;
-            color: activeRole.accent;
+            background: ${activeRole.accentSoft};
+            color: ${activeRole.accent};
             font-size: 30px;
           }
           .farm-link-btn {
@@ -352,10 +407,10 @@ function PublicPage() {
                 </p>
               </div>
 
-              <form>
+              <form onSubmit={(e) => { e.preventDefault(); navigateToRole(activeRole.route); }}>
                 <div className="farm-field">
                   <label htmlFor="email">Email address</label>
-                  <input id="email" type="email" placeholder="you@example.com" defaultValue="" />
+                  <input id="email" type="email" placeholder="you@example.com" defaultValue="" required />
                 </div>
 
                 <div className="farm-field">
@@ -363,7 +418,48 @@ function PublicPage() {
                     <label htmlFor="password">Password</label>
                     <button type="button" className="farm-link-btn" style={{ fontSize: "12px" }}>Forgot password?</button>
                   </div>
-                  <input id="password" type="password" placeholder="Enter your password" defaultValue="" />
+                  <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
+                    <input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Enter your password"
+                      defaultValue=""
+                      required
+                      style={{ paddingRight: "44px" }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      title={showPassword ? "Hide password" : "Show password"}
+                      style={{
+                        position: "absolute",
+                        right: "12px",
+                        background: "transparent",
+                        border: "none",
+                        cursor: "pointer",
+                        color: "#64748b",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        padding: "4px",
+                        borderRadius: "6px",
+                      }}
+                    >
+                      {showPassword ? (
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
+                          <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
+                          <path d="M6.61 6.61A13.52 13.52 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61" />
+                          <line x1="2" x2="22" y1="2" y2="22" />
+                        </svg>
+                      ) : (
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                          <circle cx="12" cy="12" r="3" />
+                        </svg>
+                      )}
+                    </button>
+                  </div>
                 </div>
 
                 <div className="farm-password-row">
@@ -373,7 +469,7 @@ function PublicPage() {
                   </label>
                 </div>
 
-                <button type="button" className="farm-primary-btn" onClick={() => navigateToRole(activeRole.route)}>
+                <button type="submit" className="farm-primary-btn">
                   Sign in
                 </button>
 
@@ -385,7 +481,320 @@ function PublicPage() {
               </form>
 
               <div className="farm-login-footer">
-                Don’t have an account? <button type="button" className="farm-link-btn" onClick={() => navigateToRole(activeRole.route)}>Create one</button>
+                Don’t have an account?{" "}
+                <button
+                  type="button"
+                  className="farm-link-btn"
+                  onClick={() => navigateToRole(`/signup/${loginRole}`)}
+                >
+                  Create one
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (activeSignupRole) {
+    return (
+      <div className="farm-public-shell">
+        <style>{`
+          * { box-sizing: border-box; }
+          body { margin: 0; font-family: Inter, sans-serif; }
+          .farm-public-shell {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f4fbf6 0%, #edf9f1 100%);
+            color: #0f172a;
+            font-family: Inter, sans-serif;
+          }
+          .farm-login-wrap {
+            max-width: 1180px;
+            margin: 0 auto;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 36px 20px;
+          }
+          .farm-login-card {
+            width: min(1040px, 100%);
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            border-radius: 32px;
+            box-shadow: 0 30px 80px rgba(18, 58, 41, 0.12);
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            overflow: hidden;
+          }
+          .farm-login-left {
+            background: linear-gradient(135deg, #123c2f 0%, #0e6d4d 55%, #49b97d 100%);
+            padding: 42px 36px;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+          }
+          .farm-login-left::before {
+            content: "";
+            position: absolute;
+            inset: auto -40px -35px auto;
+            width: 220px;
+            height: 220px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 50%;
+          }
+          .farm-login-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.18);
+            font-size: 11px;
+            letter-spacing: 0.15em;
+            font-weight: 700;
+            text-transform: uppercase;
+          }
+          .farm-login-right {
+            padding: 36px 38px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+          }
+          .farm-role-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+          }
+          .farm-role-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: ${activeSignupRole.accentSoft};
+            color: ${activeSignupRole.accent};
+            font-size: 26px;
+          }
+          .farm-link-btn {
+            appearance: none;
+            border: none;
+            background: transparent;
+            color: #0f5132;
+            font-weight: 700;
+            cursor: pointer;
+          }
+          form {
+            margin-top: 16px;
+            display: grid;
+            gap: 12px;
+          }
+          .farm-field {
+            display: grid;
+            gap: 5px;
+          }
+          .farm-field label {
+            font-size: 12px;
+            color: #475569;
+            font-weight: 700;
+          }
+          .farm-field input {
+            width: 100%;
+            padding: 11px 14px;
+            border-radius: 12px;
+            border: 1px solid #dfe9e1;
+            background: #f8fafc;
+            font-size: 14px;
+            color: #0f172a;
+            outline: none;
+          }
+          .farm-field input:focus {
+            border-color: #22c55e;
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.12);
+          }
+          .farm-primary-btn {
+            border: none;
+            border-radius: 12px;
+            padding: 13px 18px;
+            background: linear-gradient(135deg, #0f5a3c 0%, #10b981 100%);
+            color: #fff;
+            font-weight: 800;
+            font-size: 15px;
+            cursor: pointer;
+            box-shadow: 0 16px 30px rgba(16, 185, 129, 0.28);
+            margin-top: 6px;
+          }
+          .farm-login-footer {
+            margin-top: 12px;
+            text-align: center;
+            color: #64748b;
+            font-size: 14px;
+          }
+          @media (max-width: 860px) {
+            .farm-login-card {
+              grid-template-columns: 1fr;
+            }
+            .farm-login-left,
+            .farm-login-right {
+              padding: 28px 22px;
+            }
+          }
+        `}</style>
+
+        <div className="farm-login-wrap">
+          <div className="farm-login-card">
+            <div className="farm-login-left">
+              <div className="farm-login-badge">FarmIntern Signup</div>
+
+              <h1 style={{ margin: "20px 0 10px", fontSize: "clamp(2rem, 3.5vw, 2.8rem)", lineHeight: 1.1 }}>
+                Join the {activeSignupRole.title.replace(" Registration", "")} network today.
+              </h1>
+
+              <p style={{ margin: 0, fontSize: "15px", lineHeight: 1.6, color: "rgba(255,255,255,0.85)" }}>
+                {activeSignupRole.subtitle}
+              </p>
+
+              <div style={{ marginTop: "24px", background: "rgba(255,255,255,0.08)", padding: "18px", borderRadius: "20px", border: "1px solid rgba(255,255,255,0.12)" }}>
+                <div style={{ fontSize: "12px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(255,255,255,0.7)" }}>Platform Benefits</div>
+                <ul style={{ margin: "10px 0 0 18px", padding: 0, color: "rgba(255,255,255,0.9)", lineHeight: 1.8, fontSize: "13px" }}>
+                  <li>Direct access to agricultural partners & student talent</li>
+                  <li>Integrated attendance tracking & project logs</li>
+                  <li>Verified digital certificates & activity workflow</li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="farm-login-right">
+              <div className="farm-role-top">
+                <div className="farm-role-icon">{activeSignupRole.icon}</div>
+                <button className="farm-link-btn" onClick={() => navigateToRole("/")}>
+                  Back to home
+                </button>
+              </div>
+
+              <div style={{ marginTop: "12px" }}>
+                <h2 style={{ margin: 0, fontSize: "26px", color: "#162f26" }}>{activeSignupRole.title}</h2>
+                <p style={{ margin: "6px 0 0", color: "#64748b", fontSize: "13px" }}>
+                  Fill in your details below to create your account.
+                </p>
+              </div>
+
+              <form onSubmit={(e) => { e.preventDefault(); navigateToRole(activeSignupRole.route); }}>
+                {activeSignupRole.fields.map((f) => (
+                  <div className="farm-field" key={f.id}>
+                    <label htmlFor={f.id}>{f.label}</label>
+                    <input id={f.id} type={f.type} placeholder={f.placeholder} required />
+                  </div>
+                ))}
+
+                <div className="farm-field">
+                  <label htmlFor="signup-password">Create Password</label>
+                  <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
+                    <input
+                      id="signup-password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="At least 8 characters"
+                      required
+                      style={{ paddingRight: "44px" }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      title={showPassword ? "Hide password" : "Show password"}
+                      style={{
+                        position: "absolute",
+                        right: "12px",
+                        background: "transparent",
+                        border: "none",
+                        cursor: "pointer",
+                        color: "#64748b",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        padding: "4px",
+                        borderRadius: "6px",
+                      }}
+                    >
+                      {showPassword ? (
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
+                          <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
+                          <path d="M6.61 6.61A13.52 13.52 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61" />
+                          <line x1="2" x2="22" y1="2" y2="22" />
+                        </svg>
+                      ) : (
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                          <circle cx="12" cy="12" r="3" />
+                        </svg>
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="farm-field">
+                  <label htmlFor="confirm-password">Confirm Password</label>
+                  <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
+                    <input
+                      id="confirm-password"
+                      type={showConfirmPassword ? "text" : "password"}
+                      placeholder="Re-enter password"
+                      required
+                      style={{ paddingRight: "44px" }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      title={showConfirmPassword ? "Hide password" : "Show password"}
+                      style={{
+                        position: "absolute",
+                        right: "12px",
+                        background: "transparent",
+                        border: "none",
+                        cursor: "pointer",
+                        color: "#64748b",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        padding: "4px",
+                        borderRadius: "6px",
+                      }}
+                    >
+                      {showConfirmPassword ? (
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
+                          <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
+                          <path d="M6.61 6.61A13.52 13.52 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61" />
+                          <line x1="2" x2="22" y1="2" y2="22" />
+                        </svg>
+                      ) : (
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                          <circle cx="12" cy="12" r="3" />
+                        </svg>
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                <button type="submit" className="farm-primary-btn">
+                  Create Account
+                </button>
+              </form>
+
+              <div className="farm-login-footer">
+                Already have an account?{" "}
+                <button
+                  type="button"
+                  className="farm-link-btn"
+                  onClick={() => navigateToRole(`/login/${signupRole}`)}
+                >
+                  Sign in
+                </button>
               </div>
             </div>
           </div>

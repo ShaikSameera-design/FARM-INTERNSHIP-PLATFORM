@@ -135,41 +135,7 @@ function StudentPage() {
           </div>
 
           <div className="topbar-actions">
-            {/* PORTAL SWITCHER BUTTONS */}
-            <div className="portal-switcher" style={{ display: "flex", gap: "8px", alignItems: "center", marginRight: "12px" }}>
-              <button
-                type="button"
-                className="portal-badge-btn"
-                onClick={() => navigateToRole("/")}
-                style={{ padding: "6px 12px", borderRadius: "20px", border: "1px solid #e5e7eb", background: "#ffffff", color: "#374151", fontWeight: 500, fontSize: "12px", cursor: "pointer" }}
-              >
-                🏫 College
-              </button>
-              <button
-                type="button"
-                className="portal-badge-btn active"
-                onClick={() => navigateToRole("/student")}
-                style={{ padding: "6px 12px", borderRadius: "20px", border: "1px solid #3b82f6", background: "#eff6ff", color: "#1d4ed8", fontWeight: 600, fontSize: "12px", cursor: "pointer" }}
-              >
-                👨‍🎓 Student
-              </button>
-              <button
-                type="button"
-                className="portal-badge-btn"
-                onClick={() => navigateToRole("/communication")}
-                style={{ padding: "6px 12px", borderRadius: "20px", border: "1px solid #e5e7eb", background: "#ffffff", color: "#374151", fontWeight: 500, fontSize: "12px", cursor: "pointer" }}
-              >
-                💬 Communication
-              </button>
-              <button
-                type="button"
-                className="portal-badge-btn"
-                onClick={() => navigateToRole("/farmer")}
-                style={{ padding: "6px 12px", borderRadius: "20px", border: "1px solid #e5e7eb", background: "#ffffff", color: "#374151", fontWeight: 500, fontSize: "12px", cursor: "pointer" }}
-              >
-                🚜 Farmer
-              </button>
-            </div>
+
 
             <button className="notification-btn" type="button" onClick={() => navigateToRole("/communication")}>
               🔔
