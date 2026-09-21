@@ -1,12 +1,12 @@
 import { useState } from "react";
 import "./College.css";
 import CollegeProfile from "./CollegeProfile";
+import CommunicationSection from "../Communication/CommunicationSection";
 
 function CollegeDashboard() {
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [activeSection, setActiveSection] = useState("overview");
-
-  const students = [
+  const [students] = useState([
     {
       id: 1,
       name: "Anjali Reddy",
@@ -57,9 +57,9 @@ function CollegeDashboard() {
       progress: 0,
       status: "Pending",
     },
-  ];
+  ]);
 
-  const collegeActivities = [
+  const [collegeActivities] = useState([
     {
       title: "Internship Program Approved",
       description: "Organic Farming internship program was approved.",
@@ -78,9 +78,9 @@ function CollegeDashboard() {
       time: "Yesterday",
       type: "partner",
     },
-  ];
+  ]);
 
-  const studentActivities = [
+  const [studentActivities] = useState([
     {
       student: "Anjali Reddy",
       activity: "Completed 85% of internship",
@@ -96,7 +96,7 @@ function CollegeDashboard() {
       activity: "Updated internship progress",
       time: "Yesterday",
     },
-  ];
+  ]);
 
   const totalStudents = students.length;
 
@@ -148,7 +148,7 @@ function CollegeDashboard() {
           >
             <span>🏫</span>
             College Profile
-        </button>
+          </button>
           <button
             className={activeSection === "students" ? "active" : ""}
             onClick={() => setActiveSection("students")}
@@ -156,21 +156,26 @@ function CollegeDashboard() {
             <span>👨‍🎓</span>
             Student Activities
           </button>
-
           <button
             className={activeSection === "college" ? "active" : ""}
             onClick={() => setActiveSection("college")}
           >
-            <span>🏫</span>
+            <span>🏛️</span>
             College Activities
           </button>
-
           <button
             className={activeSection === "activity" ? "active" : ""}
             onClick={() => setActiveSection("activity")}
           >
             <span>🔔</span>
             Recent Activity
+          </button>
+          <button
+            className={activeSection === "communication" ? "active" : ""}
+            onClick={() => setActiveSection("communication")}
+          >
+            <span>💬</span>
+            Communication
           </button>
 
         </nav>
@@ -182,7 +187,7 @@ function CollegeDashboard() {
 
             <div>
               <strong>College Admin</strong>
-              <span>ABC College</span>
+              <span>Rgukt-ONGOLE College</span>
             </div>
           </div>
 
@@ -200,12 +205,13 @@ function CollegeDashboard() {
 
           <div>
             <p className="welcome-text">Welcome back 👋</p>
-            <h1>ABC College Dashboard</h1>
+            <h1>Rgukt College Dashboard</h1>
           </div>
 
           <div className="topbar-actions">
 
-            <button className="notification-btn">
+
+            <button className="notification-btn" onClick={() => setActiveSection("communication")}>
               🔔
               <span></span>
             </button>
@@ -213,7 +219,6 @@ function CollegeDashboard() {
             <div className="college-admin-avatar">
               C
             </div>
-
           </div>
 
         </header>
@@ -688,6 +693,16 @@ function CollegeDashboard() {
 
           </section>
 
+        )}
+
+        {activeSection === "communication" && (
+          <section className="page-section">
+            <div className="page-title">
+              <h2>Communication Center</h2>
+              <p>Manage alerts, feedback, and internship certificate updates.</p>
+            </div>
+            <CommunicationSection />
+          </section>
         )}
 
       </main>

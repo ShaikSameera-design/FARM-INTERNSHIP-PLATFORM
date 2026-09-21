@@ -1,32 +1,85 @@
-import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
-import StudentLayout from "./components/StudentLayout";
-import StudentDashboard from "./pages/Student/StudentDashboard";
-import BrowseInternships from "./pages/Student/BrowseInternships";
-import InternshipDetails from "./pages/Student/InternshipDetails";
-import ApplyInternship from "./pages/Student/ApplyInternship";
-import MyApplications from "./pages/Student/MyApplications";
-import Attendance from "./pages/Student/Attendance";
-import Profile from "./pages/Student/Profile";
-import "./App.css";
+import { useState, useEffect } from "react";
+import CollegeDashboard from "./pages/College/CollegeDashboard";
+import AdminDashboard from "./pages/Admin/AdminDashboard";
+import AdminLogin from "./pages/Admin/AdminLogin";
+import CommunicationPage from "./pages/Communication/CommunicationPage";
+import StudentPage from "./pages/Student/student";
+import FarmerPage from "./pages/Farmer/FarmerDashboard";
+import PublicPage from "./pages/Public/public";
 
 function App() {
-  return (
-    <HashRouter>
-      <Routes>
-        <Route path="/student" element={<StudentLayout />}>
-          <Route index element={<Navigate to="dashboard" replace />} />
-          <Route path="dashboard" element={<StudentDashboard />} />
-          <Route path="browse" element={<BrowseInternships />} />
-          <Route path="internship/:id" element={<InternshipDetails />} />
-          <Route path="apply/:id" element={<ApplyInternship />} />
-          <Route path="applications" element={<MyApplications />} />
-          <Route path="attendance" element={<Attendance />} />
-          <Route path="profile" element={<Profile />} />
-        </Route>
-        <Route path="*" element={<Navigate to="/student/dashboard" replace />} />
-      </Routes>
-    </HashRouter>
+  const [currentPath, setCurrentPath] = useState(window.location.pathname);
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(
+    () => sessionStorage.getItem("admin_authenticated") === "true"
   );
+
+  useEffect(() => {
+    const handleLocationChange = () => {
+      setCurrentPath(window.location.pathname);
+      setIsAdminAuthenticated(sessionStorage.getItem("admin_authenticated") === "true");
+    };
+
+    window.addEventListener("popstate", handleLocationChange);
+    return () => window.removeEventListener("popstate", handleLocationChange);
+  }, []);
+
+  const lowerPath = currentPath.toLowerCase();
+  const isAdminRoute = lowerPath.startsWith("/admin");
+  const isLandingRoute = lowerPath === "/" || lowerPath === "/public";
+  const isCollegeRoute = lowerPath === "/college";
+  const isCommunicationRoute = lowerPath === "/communication";
+  const isStudentRoute = lowerPath === "/student";
+  const isFarmerRoute = lowerPath === "/farmer";
+  const isPublicRoute = lowerPath === "/public";
+
+  if (isLandingRoute) {
+    return <PublicPage />;
+  }
+
+  if (isCommunicationRoute) {
+    return <CommunicationPage />;
+  }
+
+  if (isStudentRoute) {
+    return <StudentPage />;
+  }
+
+  if (isFarmerRoute) {
+    return <FarmerPage />;
+  }
+
+  if (isCollegeRoute) {
+    return <CollegeDashboard />;
+  }
+
+  if (isPublicRoute) {
+    return <PublicPage />;
+  }
+
+  if (isAdminRoute) {
+    if (!isAdminAuthenticated) {
+      return (
+        <AdminLogin
+          onLoginSuccess={() => {
+            sessionStorage.setItem("admin_authenticated", "true");
+            setIsAdminAuthenticated(true);
+          }}
+        />
+      );
+    }
+
+    return (
+      <AdminDashboard
+        onLogout={() => {
+          sessionStorage.removeItem("admin_authenticated");
+          setIsAdminAuthenticated(false);
+        }}
+      />
+    );
+  }
+
+  // Fallback for any unmatched route
+  return <PublicPage />;
 }
 
 export default App;
