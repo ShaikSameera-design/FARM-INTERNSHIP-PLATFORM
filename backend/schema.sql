@@ -1,0 +1,6 @@
+-- Tables are created and upgraded automatically at start-up by backend/app/migrate.py
+-- (existing data is never dropped). Tables:
+-- users, profiles, internships, applications, placements, tasks, evaluations,
+-- conversations, conversation_members, messages, notifications, call_invites,
+-- password_reset_tokens, college_activities.
+-- Hiring chain: applications -> placements -> tasks / evaluations.

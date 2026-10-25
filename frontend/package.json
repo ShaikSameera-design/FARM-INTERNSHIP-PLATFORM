@@ -1,0 +1,10 @@
+{
+  "name": "farmintern-platform",
+  "private": true,
+  "version": "4.0.0",
+  "type": "module",
+  "engines": { "node": ">=18" },
+  "scripts": { "dev": "vite", "build": "vite build", "lint": "eslint .", "preview": "vite preview" },
+  "dependencies": { "react": "^18.3.1", "react-dom": "^18.3.1" },
+  "devDependencies": { "@vitejs/plugin-react": "^4.3.4", "vite": "^5.4.11", "eslint": "^8.57.0", "eslint-plugin-react-hooks": "^4.6.2", "@eslint/js": "^8.57.0", "globals": "^15.8.0" }
+}
