@@ -471,23 +471,6 @@ def google_suggested_accounts():
 
 
 
-@app.post("/api/admin/google")
-def admin_google_auth(db: Session = Depends(get_db)):
-    u = db.query(User).filter(User.role == "admin", User.active == True).first()
-    if not u:
-        temp_pw = secrets.token_urlsafe(32)
-        u = User(
-            name="Platform Administrator",
-            email="admin@farmintern.local",
-            password_hash=hash_password(temp_pw),
-            role="admin",
-            verified=True,
-            active=True
-        )
-        db.add(u)
-        db.commit()
-    return {"token": create_token(u), "user": user_json(u)}
-
 
 
 

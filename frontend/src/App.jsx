@@ -1142,20 +1142,6 @@ function AdminLogin({ onLogin, onBack }) {
     }
   };
 
-  const handleGoogleAdmin = async () => {
-    setBusy(true);
-    setError('');
-    try {
-      const d = await post('/admin/google', {});
-      saveSession(d, remember);
-      onLogin(d.user);
-    } catch (err) {
-      setError(err.message || 'Google administrative authentication failed.');
-    } finally {
-      setBusy(false);
-    }
-  };
-
   return (
     <div className="admin-login-layout">
       <div className="admin-login-backdrop">
@@ -1219,12 +1205,6 @@ function AdminLogin({ onLogin, onBack }) {
           <Btn type="submit" disabled={busy} loading={busy} kind="primary" style={{ width: '100%', marginTop: '10px' }}>
             Authenticate & Access Command Console <span>→</span>
           </Btn>
-
-          <div className="auth-divider"><span>OR</span></div>
-          <button type="button" className="btn-google" onClick={handleGoogleAdmin} disabled={busy}>
-            <GoogleIcon />
-            <span>Continue with Google</span>
-          </button>
         </form>
 
         <div className="admin-security-notice">
