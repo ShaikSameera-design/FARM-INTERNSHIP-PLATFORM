@@ -91,6 +91,7 @@ SMTP_PORT = int(os.getenv("SMTP_PORT", "587") or 587)
 SMTP_USER = os.getenv("SMTP_USER", "").strip()
 SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "").replace(" ", "").strip()
 SMTP_FROM = os.getenv("SMTP_FROM", SMTP_USER or "no-reply@farmintern.local").strip()
+BREVO_API_KEY = os.getenv("BREVO_API_KEY", "").strip()
 
 # Unverified farmers may not publish internships when this is on (default on in production).
 REQUIRE_FARMER_VERIFICATION = _bool("REQUIRE_FARMER_VERIFICATION", IS_PROD)

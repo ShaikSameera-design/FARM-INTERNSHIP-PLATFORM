@@ -4,6 +4,8 @@ Every state change follows: request -> validation -> authorization/ownership -> 
 """
 import base64
 import json
+import urllib.request
+import urllib.error
 import logging
 import re
 import secrets
@@ -591,24 +593,48 @@ FarmIntern Team
 </html>"""
     msg.add_alternative(html_content, subtype="html")
 
+    api_key = config.BREVO_API_KEY
+    if not api_key:
+        raise RuntimeError("Brevo API key is not configured.")
+
+    sender = config.SMTP_FROM.strip() or user
+    sender = email.utils.parseaddr(sender)[1]
+
+    payload = {
+        "sender": {"name": "FarmIntern", "email": sender},
+        "to": [{"email": recipient}],
+        "subject": "FarmIntern password reset link",
+        "textContent": plain_text,
+        "htmlContent": html_content,
+        "replyTo": {"email": sender}
+    }
+
+    request = urllib.request.Request(
+        "https://api.brevo.com/v3/smtp/email",
+        data=json.dumps(payload).encode("utf-8"),
+        headers={
+            "api-key": api_key,
+            "accept": "application/json",
+            "content-type": "application/json"
+        },
+        method="POST"
+    )
+
     try:
-        if port == 465:
-            with smtplib.SMTP_SSL(host, port, timeout=15) as s:
-                s.login(user, password)
-                refused = s.send_message(msg)
-                if refused:
-                    raise RuntimeError(f"Email rejected for recipient(s): {list(refused.keys())}")
-        else:
-            with smtplib.SMTP(host, port, timeout=15) as s:
-                s.starttls()
-                s.login(user, password)
-                refused = s.send_message(msg)
-                if refused:
-                    raise RuntimeError(f"Email rejected for recipient(s): {list(refused.keys())}")
+        with urllib.request.urlopen(request, timeout=20) as response:
+            if response.status not in (200, 201, 202):
+                raise RuntimeError(
+                    f"Brevo returned unexpected status: {response.status}"
+                )
         log.info("Reset email successfully sent to %s", recipient)
         return True
-    except Exception as e:
-        log.exception("could not send reset email to %s: %s", recipient, e)
+    except urllib.error.HTTPError as e:
+        log.error("Brevo email delivery failed: HTTP %s", e.code)
+        raise RuntimeError(
+            f"Brevo email delivery failed (HTTP {e.code})."
+        ) from e
+    except Exception:
+        log.exception("Could not send reset email to %s", recipient)
         raise
 
 
