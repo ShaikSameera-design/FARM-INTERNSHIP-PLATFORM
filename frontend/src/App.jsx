@@ -117,458 +117,10 @@ function GoogleIcon() {
   );
 }
 
-function RealisticDisc({ liveStudents = 5, liveFarmers = 2, liveColleges = 1 }) {
-  const totalRegistered = liveStudents + liveFarmers + liveColleges;
 
-  return (
-    <div className="realistic-disc-container">
-      <svg
-        className="realistic-disc-svg"
-        viewBox="0 0 360 360"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <defs>
-          {/* Emerald AgTech Colored Vinyl Material */}
-          <radialGradient id="emeraldVinyl" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#125732" />
-            <stop offset="22%" stopColor="#0d4225" />
-            <stop offset="50%" stopColor="#114e2d" />
-            <stop offset="78%" stopColor="#082917" />
-            <stop offset="93%" stopColor="#051a0e" />
-            <stop offset="100%" stopColor="#020e07" />
-          </radialGradient>
-
-          {/* Gold & Lime Specular Rim Bevel */}
-          <linearGradient id="goldLimeRim" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#a3e635" stopOpacity="0.85" />
-            <stop offset="25%" stopColor="#fbbf24" stopOpacity="0.8" />
-            <stop offset="50%" stopColor="#ffffff" stopOpacity="0.95" />
-            <stop offset="75%" stopColor="#34d399" stopOpacity="0.8" />
-            <stop offset="100%" stopColor="#facc15" stopOpacity="0.85" />
-          </linearGradient>
-
-          {/* Anisotropic Colored Vinyl Reflection Beams */}
-          <linearGradient id="anisoEmeraldBeam1" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.28" />
-            <stop offset="35%" stopColor="#86efac" stopOpacity="0.14" />
-            <stop offset="70%" stopColor="#fef08a" stopOpacity="0.08" />
-            <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
-          </linearGradient>
-
-          <linearGradient id="anisoEmeraldBeam2" x1="100%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.22" />
-            <stop offset="40%" stopColor="#a7f3d0" stopOpacity="0.12" />
-            <stop offset="75%" stopColor="#fde047" stopOpacity="0.06" />
-            <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
-          </linearGradient>
-
-          {/* Center Live Hub Glass Depth */}
-          <radialGradient id="hubGlass" cx="45%" cy="38%" r="62%">
-            <stop offset="0%" stopColor="#0f3d23" />
-            <stop offset="45%" stopColor="#092816" />
-            <stop offset="80%" stopColor="#05180d" />
-            <stop offset="100%" stopColor="#020b06" />
-          </radialGradient>
-
-          {/* Hub Bezel Metallic Ring */}
-          <linearGradient id="hubBezel" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#fbbf24" stopOpacity="0.9" />
-            <stop offset="30%" stopColor="#ffffff" stopOpacity="0.8" />
-            <stop offset="55%" stopColor="#78f36d" stopOpacity="0.9" />
-            <stop offset="80%" stopColor="#f59e0b" stopOpacity="0.8" />
-            <stop offset="100%" stopColor="#a7f3d0" stopOpacity="0.9" />
-          </linearGradient>
-
-          {/* Metallic Spindle Eyelet Bushing */}
-          <linearGradient id="spindleGrommet" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#fef08a" />
-            <stop offset="35%" stopColor="#94a3b8" />
-            <stop offset="55%" stopColor="#ffffff" />
-            <stop offset="75%" stopColor="#d97706" />
-            <stop offset="100%" stopColor="#cbd5e1" />
-          </linearGradient>
-
-          {/* Point Badge Gradient Borders */}
-          <linearGradient id="studentBadgeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#78f36d" stopOpacity="0.85" />
-            <stop offset="100%" stopColor="#10b981" stopOpacity="0.35" />
-          </linearGradient>
-          <linearGradient id="farmerBadgeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#fbbf24" stopOpacity="0.85" />
-            <stop offset="100%" stopColor="#f59e0b" stopOpacity="0.35" />
-          </linearGradient>
-          <linearGradient id="collegeBadgeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.85" />
-            <stop offset="100%" stopColor="#0284c7" stopOpacity="0.35" />
-          </linearGradient>
-
-          {/* Circular Text Tracks along Vinyl Grooves */}
-          <path id="grooveTextUpper" d="M 44 180 A 136 136 0 1 1 316 180" fill="none" />
-          <path id="grooveTextLower" d="M 316 180 A 136 136 0 1 1 44 180" fill="none" />
-        </defs>
-
-        {/* ========================================================= */}
-        {/* ROTATING EMERALD VINYL DISC (Spins Smoothly)             */}
-        {/* ========================================================= */}
-        <g className="realistic-rotating-disc">
-          {/* Outer Vinyl Body & Gold/Lime Beveled Rim */}
-          <circle
-            cx="180"
-            cy="180"
-            r="172"
-            fill="url(#emeraldVinyl)"
-            stroke="url(#goldLimeRim)"
-            strokeWidth="2.8"
-          />
-
-          {/* Lead-in Outer Rim Groove Band */}
-          <circle cx="180" cy="180" r="166" stroke="rgba(255, 255, 255, 0.12)" strokeWidth="0.8" />
-          <circle cx="180" cy="180" r="163" stroke="rgba(0, 0, 0, 0.65)" strokeWidth="1.4" />
-
-          {/* Track Band 1 (Outer Recorded Grooves) */}
-          <circle cx="180" cy="180" r="158" stroke="rgba(167, 243, 208, 0.16)" strokeWidth="0.85" />
-          <circle cx="180" cy="180" r="154" stroke="rgba(254, 240, 138, 0.15)" strokeWidth="0.9" strokeDasharray="28 5 14 3" />
-          <circle cx="180" cy="180" r="150" stroke="rgba(255, 255, 255, 0.08)" strokeWidth="0.75" />
-          <circle cx="180" cy="180" r="146" stroke="rgba(120, 243, 109, 0.18)" strokeWidth="0.9" strokeDasharray="20 4 10 3" />
-          <circle cx="180" cy="180" r="142" stroke="rgba(167, 243, 208, 0.12)" strokeWidth="0.75" />
-          <circle cx="180" cy="180" r="138" stroke="rgba(254, 240, 138, 0.14)" strokeWidth="0.85" strokeDasharray="32 6 16 4" />
-
-          {/* Track Gap 1 (Smooth Emerald Separator Band) */}
-          <circle cx="180" cy="180" r="134" stroke="#041a0e" strokeWidth="3" />
-
-          {/* Curved Text Engraved along Vinyl Grooves (Spins with Disc) */}
-          <text fill="#86efac" fontSize="8" fontFamily="monospace" letterSpacing="1.8" fontWeight="800" opacity="0.9">
-            <textPath href="#grooveTextUpper" startOffset="50%" textAnchor="middle">
-              ✦ FARMINTERN AGRICULTURAL OS ✦ REAL FIELDWORK ✦
-            </textPath>
-          </text>
-          <text fill="#fde047" fontSize="8" fontFamily="monospace" letterSpacing="1.8" fontWeight="800" opacity="0.9">
-            <textPath href="#grooveTextLower" startOffset="50%" textAnchor="middle">
-              ✦ DUAL CERTIFICATION ✦ UNIVERSITY ACCREDITED ✦
-            </textPath>
-          </text>
-
-          {/* Track Band 2 (Middle Recorded Grooves) */}
-          <circle cx="180" cy="180" r="130" stroke="rgba(167, 243, 208, 0.15)" strokeWidth="0.8" />
-          <circle cx="180" cy="180" r="126" stroke="rgba(120, 243, 109, 0.16)" strokeWidth="0.85" strokeDasharray="24 4 12 3" />
-          <circle cx="180" cy="180" r="122" stroke="rgba(254, 240, 138, 0.14)" strokeWidth="0.75" />
-          <circle cx="180" cy="180" r="118" stroke="rgba(255, 255, 255, 0.08)" strokeWidth="0.8" />
-          <circle cx="180" cy="180" r="114" stroke="rgba(120, 243, 109, 0.15)" strokeWidth="0.85" strokeDasharray="18 4 8 2" />
-          <circle cx="180" cy="180" r="110" stroke="rgba(167, 243, 208, 0.12)" strokeWidth="0.7" />
-
-          {/* Track Gap 2 (Smooth Emerald Separator Band) */}
-          <circle cx="180" cy="180" r="106" stroke="#041a0e" strokeWidth="3" />
-
-          {/* Track Band 3 (Inner Recorded Grooves) */}
-          <circle cx="180" cy="180" r="102" stroke="rgba(167, 243, 208, 0.16)" strokeWidth="0.8" />
-          <circle cx="180" cy="180" r="98" stroke="rgba(254, 240, 138, 0.15)" strokeWidth="0.85" strokeDasharray="22 4 10 3" />
-          <circle cx="180" cy="180" r="94" stroke="rgba(120, 243, 109, 0.14)" strokeWidth="0.75" />
-          <circle cx="180" cy="180" r="90" stroke="rgba(255, 255, 255, 0.08)" strokeWidth="0.7" />
-
-          {/* Dead Wax Run-out Area & Matrix Spiral */}
-          <circle cx="180" cy="180" r="85" stroke="rgba(2, 14, 7, 0.9)" strokeWidth="4" />
-          <path
-            d="M 180 97 A 83 83 0 0 1 263 180 A 79 79 0 0 1 180 259 A 75 75 0 0 1 105 180 A 71 71 0 0 1 180 109"
-            fill="none"
-            stroke="rgba(255, 255, 255, 0.12)"
-            strokeWidth="0.9"
-          />
-
-          {/* Dual Anisotropic Translucent Specular Sheen (Hourglass light beams) */}
-          <path
-            d="M 180 180 L 72 46 A 168 168 0 0 1 180 12 Z"
-            fill="url(#anisoEmeraldBeam1)"
-            opacity="0.55"
-          />
-          <path
-            d="M 180 180 L 288 314 A 168 168 0 0 1 180 348 Z"
-            fill="url(#anisoEmeraldBeam1)"
-            opacity="0.55"
-          />
-          <path
-            d="M 180 180 L 314 72 A 168 168 0 0 1 348 180 Z"
-            fill="url(#anisoEmeraldBeam2)"
-            opacity="0.38"
-          />
-          <path
-            d="M 180 180 L 46 288 A 168 168 0 0 1 12 180 Z"
-            fill="url(#anisoEmeraldBeam2)"
-            opacity="0.38"
-          />
-        </g>
-
-        {/* ========================================================= */}
-        {/* STATIONARY TELEMETRY LAYER (Points on Disc, Not Side-by-Side) */}
-        {/* ========================================================= */}
-        <g className="disc-live-overlay-layer">
-          {/* Orbital Radar Guide Ring */}
-          <circle
-            cx="180"
-            cy="180"
-            r="116"
-            stroke="rgba(120, 243, 109, 0.18)"
-            strokeWidth="0.9"
-            strokeDasharray="4 6"
-          />
-
-          {/* Telemetry Connecting Lines (From Center Hub out to the 3 points) */}
-          {/* Line to Top Point */}
-          <line
-            x1="180"
-            y1="134"
-            x2="180"
-            y2="86"
-            stroke="rgba(120, 243, 109, 0.55)"
-            strokeWidth="1.4"
-            strokeDasharray="3 3"
-          />
-          <circle cx="180" cy="86" r="2.8" fill="#78f36d" />
-
-          {/* Line to Bottom-Right Point */}
-          <line
-            x1="214"
-            y1="204"
-            x2="236"
-            y2="212"
-            stroke="rgba(251, 191, 36, 0.55)"
-            strokeWidth="1.4"
-            strokeDasharray="3 3"
-          />
-          <circle cx="236" cy="212" r="2.8" fill="#fbbf24" />
-
-          {/* Line to Bottom-Left Point */}
-          <line
-            x1="146"
-            y1="204"
-            x2="124"
-            y2="212"
-            stroke="rgba(56, 189, 248, 0.55)"
-            strokeWidth="1.4"
-            strokeDasharray="3 3"
-          />
-          <circle cx="124" cy="212" r="2.8" fill="#38bdf8" />
-
-          {/* ------------------------------------------------------- */}
-          {/* CENTER LIVE HUB (Streamlined Core Console)              */}
-          {/* ------------------------------------------------------- */}
-          <circle
-            cx="180"
-            cy="180"
-            r="46"
-            fill="url(#hubGlass)"
-            stroke="url(#hubBezel)"
-            strokeWidth="2.4"
-          />
-          <circle
-            cx="180"
-            cy="180"
-            r="41"
-            stroke="rgba(120, 243, 109, 0.3)"
-            strokeWidth="0.9"
-            strokeDasharray="3 2"
-          />
-
-          {/* Center Hub Content */}
-          <text
-            x="180"
-            y="150"
-            textAnchor="middle"
-            fill="#86efac"
-            fontSize="9"
-            fontFamily="Manrope, sans-serif"
-            fontWeight="900"
-            letterSpacing="1.2"
-          >
-            ● LIVE NETWORK
-          </text>
-          <text
-            x="180"
-            y="174"
-            textAnchor="middle"
-            fill="#ffffff"
-            fontSize="24"
-            fontFamily="Manrope, sans-serif"
-            fontWeight="900"
-            letterSpacing="-0.5"
-          >
-            {totalRegistered}
-          </text>
-          <text
-            x="180"
-            y="186"
-            textAnchor="middle"
-            fill="#e2e8f0"
-            fontSize="8.5"
-            fontFamily="Manrope, sans-serif"
-            fontWeight="900"
-            letterSpacing="1.4"
-          >
-            REGISTERED
-          </text>
-
-          {/* Center Spindle Eyelet Bushing */}
-          <circle
-            cx="180"
-            cy="200"
-            r="7"
-            fill="#031208"
-            stroke="url(#spindleGrommet)"
-            strokeWidth="2.2"
-          />
-          <circle cx="180" cy="200" r="3" fill="#010603" />
-
-          <text
-            x="180"
-            y="218"
-            textAnchor="middle"
-            fill="#ffffff"
-            fontSize="10"
-            fontFamily="Manrope, sans-serif"
-            fontWeight="900"
-            letterSpacing="1.8"
-          >
-            ✦ FARMINTERN ✦
-          </text>
-
-          {/* ------------------------------------------------------- */}
-          {/* POINT 1 (TOP / NORTH): LIVE STUDENTS                   */}
-          {/* ------------------------------------------------------- */}
-          <g className="disc-node-point disc-node-top">
-            <rect
-              x="119"
-              y="32"
-              width="122"
-              height="54"
-              rx="16"
-              fill="#051f11"
-              stroke="#4ade80"
-              strokeWidth="2"
-            />
-            <circle cx="138" cy="46" r="3.5" fill="#4ade80" className="hub-pulse-dot" />
-            <text x="149" y="50" fontSize="15">🎓</text>
-            <text
-              x="180"
-              y="66"
-              textAnchor="middle"
-              fill="#4ade80"
-              fontSize="23"
-              fontFamily="Manrope, sans-serif"
-              fontWeight="900"
-              letterSpacing="-0.5"
-            >
-              {liveStudents}
-            </text>
-            <text
-              x="180"
-              y="79"
-              textAnchor="middle"
-              fill="#ffffff"
-              fontSize="11"
-              fontFamily="Manrope, sans-serif"
-              fontWeight="900"
-              letterSpacing="1"
-            >
-              LIVE STUDENTS
-            </text>
-          </g>
-
-          {/* ------------------------------------------------------- */}
-          {/* POINT 2 (BOTTOM-RIGHT / SOUTH-EAST): LIVE FARMERS       */}
-          {/* ------------------------------------------------------- */}
-          <g className="disc-node-point disc-node-bottom-right">
-            <rect
-              x="212"
-              y="212"
-              width="122"
-              height="54"
-              rx="16"
-              fill="#241804"
-              stroke="#fbbf24"
-              strokeWidth="2"
-            />
-            <circle cx="231" cy="226" r="3.5" fill="#fbbf24" className="hub-pulse-dot" />
-            <text x="242" y="230" fontSize="15">🚜</text>
-            <text
-              x="273"
-              y="246"
-              textAnchor="middle"
-              fill="#fbbf24"
-              fontSize="23"
-              fontFamily="Manrope, sans-serif"
-              fontWeight="900"
-              letterSpacing="-0.5"
-            >
-              {liveFarmers}
-            </text>
-            <text
-              x="273"
-              y="259"
-              textAnchor="middle"
-              fill="#ffffff"
-              fontSize="11"
-              fontFamily="Manrope, sans-serif"
-              fontWeight="900"
-              letterSpacing="1"
-            >
-              LIVE FARMERS
-            </text>
-          </g>
-
-          {/* ------------------------------------------------------- */}
-          {/* POINT 3 (BOTTOM-LEFT / SOUTH-WEST): LIVE COLLEGES       */}
-          {/* ------------------------------------------------------- */}
-          <g className="disc-node-point disc-node-bottom-left">
-            <rect
-              x="26"
-              y="212"
-              width="122"
-              height="54"
-              rx="16"
-              fill="#041b2a"
-              stroke="#38bdf8"
-              strokeWidth="2"
-            />
-            <circle cx="45" cy="226" r="3.5" fill="#38bdf8" className="hub-pulse-dot" />
-            <text x="56" y="230" fontSize="15">🏛️</text>
-            <text
-              x="87"
-              y="246"
-              textAnchor="middle"
-              fill="#38bdf8"
-              fontSize="23"
-              fontFamily="Manrope, sans-serif"
-              fontWeight="900"
-              letterSpacing="-0.5"
-            >
-              {liveColleges}
-            </text>
-            <text
-              x="87"
-              y="259"
-              textAnchor="middle"
-              fill="#ffffff"
-              fontSize="11"
-              fontFamily="Manrope, sans-serif"
-              fontWeight="900"
-              letterSpacing="1"
-            >
-              LIVE COLLEGES
-            </text>
-          </g>
-        </g>
-      </svg>
-    </div>
-  );
-}
-const AgTechIllustration = RealisticDisc;
-const RotatingDisc = RealisticDisc;
-
-
-
-
-function Landing({ enter, user, onLogout }) {
+function Landing({ enter, user, onLogout, dark, onToggleDark }) {
   const [stats, setStats] = useState({ students: 5, farmers: 2, colleges: 1, placements: 1 });
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -586,12 +138,24 @@ function Landing({ enter, user, onLogout }) {
     // Poll every 4s so newly registered students, farmers, colleges update live
     const interval = setInterval(fetchStats, 4000);
     window.addEventListener('fi-stats-updated', fetchStats);
+
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 350);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
     return () => {
       active = false;
       clearInterval(interval);
       window.removeEventListener('fi-stats-updated', fetchStats);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   // Exact live registered counts from database
   const liveStudents = typeof stats.students === 'number' ? stats.students : 5;
@@ -746,7 +310,7 @@ function Landing({ enter, user, onLogout }) {
   ];
 
   return (
-    <div className="landing-v2">
+    <div className="landing-v2" id="top">
       {/* Top Telemetry Announcement */}
       <div className="landing-top-banner">
         <span className="tag">AgTech 4.0</span>
@@ -754,8 +318,8 @@ function Landing({ enter, user, onLogout }) {
       </div>
 
       {/* Main Sticky Navigation */}
-      <nav className="landing-nav">
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+      <nav className="landing-nav" id="header">
+        <div className="landing-nav-brand" style={{ display: 'flex', alignItems: 'center' }}>
           <Logo />
           <div className="brand-pulse">
             <span className="brand-pulse-dot" />
@@ -771,6 +335,15 @@ function Landing({ enter, user, onLogout }) {
           <a href="#workflow">How It Works</a>
         </div>
         <div className="landing-nav-actions">
+          <button
+            type="button"
+            className="landing-theme-toggle"
+            onClick={onToggleDark}
+            title={dark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            aria-label={dark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+          >
+            <span className="theme-toggle-icon">{dark ? '☼' : '☾'}</span>
+          </button>
           {user ? (
             <>
               <div className="landing-user-badge" title={`Signed in as ${user.email}`}>
@@ -822,23 +395,40 @@ function Landing({ enter, user, onLogout }) {
             </div>
           </div>
 
-          {/* Frameless Realistic Emerald Disc Showcase with On-Disc Live Telemetry */}
-          <div className="hero-disc-showcase">
-            {/* Realistic Emerald Rotating Disc with On-Disc Live Registered Data */}
-            <div className="realistic-disc-stage">
-              <RealisticDisc
-                liveStudents={liveStudents}
-                liveFarmers={liveFarmers}
-                liveColleges={liveColleges}
+          {/* Student and Farmer Mentorship Visual Showcase */}
+          <div className="hero-media-showcase">
+            <div className="hero-image-wrapper">
+              <img
+                src="/images/farmer-mentor-training.jpg"
+                alt="Agricultural student and progressive farmer mentor in the field"
+                className="hero-main-image"
+                loading="eager"
               />
+              <div className="hero-image-overlay" />
+              <div className="hero-floating-badge badge-top-left">
+                <span className="badge-icon">🚜</span>
+                <div>
+                  <strong>Farmer Mentorship</strong>
+                  <small>Practical Field Guidance</small>
+                </div>
+              </div>
+              <div className="hero-floating-badge badge-bottom-right">
+                <span className="badge-icon">🌱</span>
+                <div>
+                  <strong>Student Fieldwork</strong>
+                  <small>Verified Internship Milestones</small>
+                </div>
+              </div>
             </div>
 
-            {/* High-Contrast Sync Indicator below the Disc */}
-            <div className="disc-live-status-pill">
+            {/* Live Network Registration Status Indicator */}
+            <div className="hero-live-status-pill">
               <span className="pulse-live-dot" />
-              <span className="pill-status-label">● LIVE NETWORK SYNC</span>
+              <span className="pill-status-label">● LIVE NETWORK</span>
               <span className="pill-status-sep">·</span>
-              <span className="pill-status-desc">REAL-TIME REGISTRATION TELEMETRY</span>
+              <span className="pill-status-desc">
+                {liveStudents} STUDENTS · {liveFarmers} FARM PARTNERS · {liveColleges} COLLEGES
+              </span>
             </div>
           </div>
         </section>
@@ -1109,12 +699,45 @@ function Landing({ enter, user, onLogout }) {
         </div>
         <div className="footer-bottom-row">
           <span>FarmIntern Operating System · Platform v4.0 · All Rights Reserved</span>
-          <div style={{ display: 'flex', gap: '20px' }}>
+          <div className="footer-bottom-meta">
             <span>● Status: All Systems Operational</span>
             <span>Accredited Field Network</span>
+            <button
+              type="button"
+              className="footer-theme-toggle-btn"
+              onClick={onToggleDark}
+              title={dark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+              aria-label={dark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            >
+              <span className="theme-toggle-icon">{dark ? '☼' : '☾'}</span>
+            </button>
+            <button
+              type="button"
+              className="footer-back-to-top-btn"
+              onClick={scrollToTop}
+              title="Return directly to home"
+              aria-label="Return directly to home"
+            >
+              <span>Back to Home</span>
+              <span className="footer-arrow-icon">↑</span>
+            </button>
           </div>
         </div>
       </footer>
+
+      {/* Floating Back to Home Button */}
+      {showScrollTop && (
+        <button
+          type="button"
+          className="landing-floating-top-btn"
+          onClick={scrollToTop}
+          title="Return to home"
+          aria-label="Scroll back to home"
+        >
+          <span className="arrow">↑</span>
+          <span className="label">Back to Home</span>
+        </button>
+      )}
     </div>
   );
 }
@@ -1173,8 +796,8 @@ function AdminLogin({ onLogin, onBack }) {
               type="email"
               required
               autoFocus
-              autoComplete="email"
-              placeholder="admin@farmintern.local"
+              autoComplete="off"
+              placeholder="Enter admin email"
             />
           </label>
           <label>
@@ -1185,7 +808,7 @@ function AdminLogin({ onLogin, onBack }) {
                 onChange={e => setPassword(e.target.value)}
                 type={show ? 'text' : 'password'}
                 required
-                autoComplete="current-password"
+                autoComplete="new-password"
                 placeholder="••••••••••••"
               />
               <button type="button" onClick={() => setShow(v => !v)}>
@@ -1273,41 +896,6 @@ function PasswordReset({ onBack, initialToken = '' }) {
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
 
-  // SMTP Setup State for delivering to real inboxes
-  const [smtpStatus, setSmtpStatus] = useState(null);
-  const [showSmtpSetup, setShowSmtpSetup] = useState(false);
-  const [smtpUser, setSmtpUser] = useState('');
-  const [smtpPassword, setSmtpPassword] = useState('');
-  const [smtpSaving, setSmtpSaving] = useState(false);
-  const [smtpError, setSmtpError] = useState('');
-  const [smtpSuccess, setSmtpSuccess] = useState('');
-
-  useEffect(() => {
-    api('/auth/smtp-status')
-      .then(res => setSmtpStatus(res))
-      .catch(() => {});
-  }, []);
-
-  const handleConfigureSmtp = async e => {
-    e.preventDefault();
-    setSmtpSaving(true);
-    setSmtpError('');
-    setSmtpSuccess('');
-    try {
-      const res = await api('/auth/smtp-configure', {
-        method: 'POST',
-        body: JSON.stringify({ user: smtpUser.trim(), password: smtpPassword.trim() })
-      });
-      setSmtpSuccess(res.message);
-      setSmtpStatus({ configured: true, sender: smtpUser.trim(), host: 'smtp.gmail.com', port: 587 });
-      setShowSmtpSetup(false);
-    } catch (err) {
-      setSmtpError(err.message);
-    } finally {
-      setSmtpSaving(false);
-    }
-  };
-
   const strength = password.length < 6 ? 'Too short' : password.length < 10 ? 'Fair' : /[A-Z]/.test(password) && /[0-9]/.test(password) && /[^A-Za-z0-9]/.test(password) ? 'Strong' : 'Good';
 
   const request = async e => {
@@ -1321,15 +909,13 @@ function PasswordReset({ onBack, initialToken = '' }) {
         method: 'POST',
         body: JSON.stringify({ email: email.trim() })
       });
-      const results = d.results || (d.token ? [{ email: d.email, token: d.token, reset_url: d.reset_url, name: d.name || '' }] : []);
       setSentInfo({
-        count: d.count || results.length,
-        emails: d.emails || (d.email ? [d.email] : []),
-        results,
+        email: d.email || email.trim(),
+        name: d.name || '',
         message: d.message,
         smtp_configured: d.smtp_configured
       });
-      setMessage(d.message || `Password reset link dispatched to ${email}.`);
+      setMessage(d.message || `Password reset link dispatched.`);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -1371,10 +957,10 @@ function PasswordReset({ onBack, initialToken = '' }) {
         <div className="login-visual-content">
           <Pill tone="outline">ACCOUNT RECOVERY</Pill>
           <h1>Get back to<br /><span>your workspace.</span></h1>
-          <p>Secure password recovery with verified reset links sent directly to your email inbox.</p>
+          <p>Secure password recovery with verified reset links sent directly to your registered email.</p>
           <div className="login-stack">
-            <div><b>01</b><span>Enter any email(s)</span></div>
-            <div><b>02</b><span>Receive link in inbox</span></div>
+            <div><b>01</b><span>Enter registered email</span></div>
+            <div><b>02</b><span>Receive secure link</span></div>
             <div><b>03</b><span>Set new password</span></div>
           </div>
         </div>
@@ -1385,109 +971,19 @@ function PasswordReset({ onBack, initialToken = '' }) {
           <small>ACCOUNT RECOVERY</small>
           <h2>{token ? 'Create a new' : 'Forgot your'}<br /><span>{token ? 'password.' : 'password?'}</span></h2>
 
-          {/* Live Inbox Delivery Status Banner */}
-          {!token && (
-            <div style={{
-              background: smtpStatus?.configured ? '#eaf5ee' : '#fdf8ea',
-              border: `1px solid ${smtpStatus?.configured ? '#c2e4cc' : '#f0dd9d'}`,
-              borderRadius: '10px',
-              padding: '10px 12px',
-              marginBottom: '16px',
-              fontSize: '12.5px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: '8px'
-            }}>
-              <div>
-                <span style={{ fontWeight: 700, color: smtpStatus?.configured ? '#1e8b50' : '#8f5b00' }}>
-                  {smtpStatus?.configured ? '✓ Live Inbox Delivery Active' : '📬 Live Inbox Delivery'}
-                </span>
-                <p style={{ margin: '2px 0 0', color: '#57695e', fontSize: '11.5px' }}>
-                  {smtpStatus?.configured
-                    ? `Emails send directly to recipient inboxes via ${smtpStatus.sender}`
-                    : 'Configure Gmail to deliver real reset emails to inboxes'}
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() => setShowSmtpSetup(v => !v)}
-                style={{
-                  background: smtpStatus?.configured ? '#ffffff' : '#1e8b50',
-                  color: smtpStatus?.configured ? '#1e8b50' : '#ffffff',
-                  border: smtpStatus?.configured ? '1px solid #c2e4cc' : 'none',
-                  borderRadius: '6px',
-                  padding: '5px 9px',
-                  fontSize: '11px',
-                  fontWeight: 700,
-                  cursor: 'pointer',
-                  whiteSpace: 'nowrap'
-                }}
-              >
-                {showSmtpSetup ? 'Close' : smtpStatus?.configured ? 'Edit' : 'Setup Inbox'}
-              </button>
-            </div>
-          )}
-
-          {/* Collapsible SMTP Configuration Form */}
-          {!token && showSmtpSetup && (
-            <form onSubmit={handleConfigureSmtp} style={{
-              background: '#f8faf9',
-              border: '1px solid #d8e5dc',
-              borderRadius: '12px',
-              padding: '14px',
-              marginBottom: '16px',
-              fontSize: '13px'
-            }}>
-              <b style={{ color: '#17241b', display: 'block', marginBottom: '4px' }}>Connect Gmail for Live Inbox Delivery</b>
-              <p style={{ margin: '0 0 10px', color: '#687e70', fontSize: '12px', lineHeight: '1.4' }}>
-                Enter your Gmail address and a 16-character <a href="https://myaccount.google.com/apppasswords" target="_blank" rel="noreferrer" style={{ color: '#1e8b50', textDecoration: 'underline' }}>Google App Password</a> to send emails from your own Gmail.
-              </p>
-              <label style={{ fontSize: '12px', display: 'block', marginBottom: '8px' }}>
-                Gmail Address
-                <input
-                  type="email"
-                  value={smtpUser}
-                  onChange={e => setSmtpUser(e.target.value)}
-                  placeholder="your_email@gmail.com"
-                  required
-                  style={{ width: '100%', padding: '7px 10px', borderRadius: '8px', border: '1px solid #c8d9ce', marginTop: '3px', boxSizing: 'border-box' }}
-                />
-              </label>
-              <label style={{ fontSize: '12px', display: 'block', marginBottom: '10px' }}>
-                16-Character App Password
-                <input
-                  type="password"
-                  value={smtpPassword}
-                  onChange={e => setSmtpPassword(e.target.value)}
-                  placeholder="abcd efgh ijkl mnop"
-                  required
-                  style={{ width: '100%', padding: '7px 10px', borderRadius: '8px', border: '1px solid #c8d9ce', marginTop: '3px', boxSizing: 'border-box' }}
-                />
-              </label>
-              {smtpError && <div className="form-error" style={{ marginBottom: '8px', fontSize: '11.5px' }}>{smtpError}</div>}
-              {smtpSuccess && <div className="form-success" style={{ marginBottom: '8px', fontSize: '11.5px' }}>✓ {smtpSuccess}</div>}
-              <div style={{ display: 'flex', gap: '8px' }}>
-                <Btn type="submit" loading={smtpSaving} style={{ flex: 1, minHeight: '36px', fontSize: '12.5px' }}>
-                  Save & Enable Inbox Delivery
-                </Btn>
-              </div>
-            </form>
-          )}
-
           {!token ? (
             !sentInfo ? (
               <form onSubmit={request}>
                 <label>
-                  Email address(es) to reset
-                  <span style={{ display: 'block', fontSize: '12px', color: '#687e70', fontWeight: 400, marginTop: '2px', marginBottom: '6px' }}>
-                    Enter any email (or multiple separated by commas). Reset links will be dispatched to all entered inboxes.
+                  Registered email address
+                  <span style={{ display: 'block', fontSize: '12px', color: '#687e70', fontWeight: 400, marginTop: '2px', marginBottom: '8px' }}>
+                    Enter the one email address registered with your account.
                   </span>
-                  <textarea
-                    rows={2}
+                  <input
+                    type="email"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
-                    placeholder="e.g. your_email@gmail.com, another_email@gmail.com"
+                    placeholder="e.g. your_email@gmail.com"
                     autoComplete="email"
                     style={{
                       width: '100%',
@@ -1496,41 +992,35 @@ function PasswordReset({ onBack, initialToken = '' }) {
                       border: '1.5px solid #d0dcd4',
                       fontSize: '14px',
                       fontFamily: 'inherit',
-                      resize: 'vertical',
-                      lineHeight: '1.4',
                       boxSizing: 'border-box'
                     }}
                     required
                   />
                 </label>
                 {error && <div className="form-error">{error}</div>}
-                <Btn type="submit" loading={busy}>
-                  Send Reset Link to Inbox →
+                <Btn type="submit" loading={busy} style={{ width: '100%', marginTop: '6px' }}>
+                  Send Reset Link →
                 </Btn>
               </form>
             ) : (
               <div style={{ background: '#f7faf8', padding: '22px', borderRadius: '16px', border: '1px solid #d4e2d8' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#1e8b50', fontWeight: '800', marginBottom: '8px' }}>
                   <span style={{ fontSize: '18px' }}>✓</span>
-                  <span>
-                    {sentInfo.results?.length > 1
-                      ? `Reset links dispatched to ${sentInfo.results.length} email inboxes`
-                      : 'Reset link dispatched to inbox'}
-                  </span>
+                  <span>Password reset link sent</span>
                 </div>
                 <p style={{ margin: '0 0 16px', fontSize: '13.5px', color: '#3d4d42', lineHeight: '1.5' }}>
-                  {sentInfo.message}
+                  {sentInfo.message || `A password reset link has been dispatched.`}
                 </p>
 
-                <div style={{ display: 'grid', gap: '10px', marginBottom: '16px' }}>
-                  {sentInfo.results?.map(item => (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '16px' }}>
+                  {[{ email: sentInfo.email, name: sentInfo.name }].map(item => (
                     <div
                       key={item.email}
                       style={{
                         background: '#ffffff',
                         border: '1px solid #e1ebe3',
                         borderRadius: '12px',
-                        padding: '12px 14px',
+                        padding: '14px',
                         display: 'flex',
                         flexDirection: 'column',
                         gap: '8px'
@@ -1539,44 +1029,56 @@ function PasswordReset({ onBack, initialToken = '' }) {
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                           <div style={{
-                            width: '30px',
-                            height: '30px',
+                            width: '32px',
+                            height: '32px',
                             borderRadius: '50%',
                             background: '#e8f5ec',
                             color: '#1e8b50',
                             display: 'grid',
                             placeItems: 'center',
                             fontWeight: 700,
-                            fontSize: '12px'
+                            fontSize: '13px'
                           }}>
                             {(item.name || item.email || 'U')[0].toUpperCase()}
                           </div>
                           <div>
                             <b style={{ fontSize: '13.5px', color: '#17241b', display: 'block' }}>{item.email}</b>
-                            <span style={{ fontSize: '11.5px', color: '#687e70', textTransform: 'capitalize' }}>
-                              {item.name ? `${item.name} (${item.role || 'Member'})` : 'Account ready'}
+                            <span style={{ fontSize: '11.5px', color: '#687e70' }}>
+                              {item.name ? `Account: ${item.name}` : 'Registered account'}
                             </span>
                           </div>
                         </div>
-                        <span style={{ fontSize: '11px', background: '#eaf4ee', color: '#1e8b50', padding: '2px 7px', borderRadius: '6px', fontWeight: 600 }}>
+                        <span style={{ fontSize: '11px', background: '#eaf4ee', color: '#1e8b50', padding: '2px 8px', borderRadius: '6px', fontWeight: 600 }}>
                           Email Dispatched
                         </span>
                       </div>
 
-                      <p style={{ margin: '4px 0 0', fontSize: '12.5px', color: '#57695e', lineHeight: '1.4' }}>
-                        A secure password reset link has been dispatched to <b>{item.email}</b>. Please check your inbox and click the link to set your new password.
+                      <p style={{ margin: '4px 0 0', fontSize: '12.5px', color: '#57695e', lineHeight: '1.5' }}>
+                        A secure password reset link has been sent to <b>{item.email}</b>. Please check the email inbox (and your spam or junk folder if not seen immediately) and click the link inside to set your new password.
                       </p>
 
-                      <div style={{ display: 'flex', gap: '8px', marginTop: '6px', flexWrap: 'wrap' }}>
+                      <div style={{ display: 'flex', gap: '8px', marginTop: '6px' }}>
                         <a
                           href={item.email && item.email.endsWith('@gmail.com') ? `https://mail.google.com/mail/u/?authuser=${encodeURIComponent(item.email)}` : 'https://mail.google.com'}
                           target="_blank"
                           rel="noreferrer"
-                          className="btn ghost"
+                          className="btn"
                           style={{ textDecoration: 'none', textAlign: 'center', fontSize: '12.5px', padding: '8px 12px', minHeight: '36px', width: '100%', boxSizing: 'border-box' }}
                         >
                           Open Email Inbox ↗
                         </a>
+                        {item.email && item.email.endsWith('@gmail.com') && (
+                          <a
+                            href={`https://mail.google.com/mail/u/?authuser=${encodeURIComponent(item.email)}#spam`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="btn ghost"
+                            style={{ textDecoration: 'none', textAlign: 'center', fontSize: '12.5px', padding: '8px 12px', minHeight: '36px', boxSizing: 'border-box', whiteSpace: 'nowrap' }}
+                            title="Check Gmail Spam folder"
+                          >
+                            Check Spam Folder ↗
+                          </a>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -1590,11 +1092,17 @@ function PasswordReset({ onBack, initialToken = '' }) {
                       setError('');
                       setMessage('');
                     }}
-                    style={{ background: 'transparent', color: '#57695e', cursor: 'pointer', padding: 0, fontWeight: 700, border: 'none' }}
+                    style={{ background: 'transparent', color: '#1e8b50', cursor: 'pointer', padding: 0, fontWeight: 700, border: 'none' }}
                   >
-                    ← Send to another email
+                    ← Send to another registered email
                   </button>
-                  <span style={{ color: '#889a8e' }}>Reset link valid for 30 minutes</span>
+                  <button
+                    type="button"
+                    onClick={onBack}
+                    style={{ background: 'transparent', color: '#57695e', cursor: 'pointer', padding: 0, border: 'none' }}
+                  >
+                    Back to sign in
+                  </button>
                 </div>
               </div>
             )
@@ -2288,6 +1796,15 @@ function App() {
   const [loginRole, setLoginRole] = useState('student');
   const [user, setUser] = useState(initialUser);
   const [checking, setChecking] = useState(hasSession && resetToken === null && (isAppPath || isAdminPath));
+  const [dark, setDark] = useState(() => localStorage.getItem('fi_dark') === '1');
+  const [theme, setTheme] = useState(() => localStorage.getItem('fi_theme') || 'mono');
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', dark);
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem('fi_dark', dark ? '1' : '0');
+    localStorage.setItem('fi_theme', theme);
+  }, [dark, theme]);
 
   const navigateTo = (path, newScreen) => {
     window.history.pushState(null, '', path);
@@ -2389,6 +1906,8 @@ function App() {
       <Landing
         user={user}
         onLogout={logout}
+        dark={dark}
+        onToggleDark={() => setDark(d => !d)}
         enter={selectedRole => {
           if (user) {
             navigateTo('/app', 'app');
@@ -2414,15 +1933,25 @@ function App() {
       />
     );
   }
-  return <Shell user={user} onLogout={logout} onUser={u => { setUser(u); storeUser(u); }} />;
+  return (
+    <Shell
+      user={user}
+      onLogout={logout}
+      onUser={u => { setUser(u); storeUser(u); }}
+      dark={dark}
+      setDark={setDark}
+      theme={theme}
+      setTheme={setTheme}
+    />
+  );
 }
 
 
 
 
-function Shell({ user, onLogout, onUser }) {
+function Shell({ user, onLogout, onUser, dark, setDark, theme, setTheme }) {
   const [page, setPage] = useState('overview'), [dash, setDash] = useState(null), [notifications, setNotifications] = useState([]);
-  const [toast, setToastState] = useState(null), [dark, setDark] = useState(localStorage.getItem('fi_dark') === '1'), [theme, setTheme] = useState(localStorage.getItem('fi_theme') || 'mono');
+  const [toast, setToastState] = useState(null);
   const [mobile, setMobile] = useState(false), [refreshing, setRefreshing] = useState(false), [loadError, setLoadError] = useState('');
   const [poll, setPoll] = useState({ notifications: 0, messages: 0, incoming_call: null }), [call, setCall] = useState(null);
   const handled = useRef(new Set()), lastUnread = useRef(0);
@@ -2435,7 +1964,6 @@ function Shell({ user, onLogout, onUser }) {
     catch (e) { setLoadError(e.message); setToast(e.message, 'error'); } finally { setRefreshing(false); }
   }, [setToast]);
   useEffect(() => { load(); }, [load]);
-  useEffect(() => { document.documentElement.classList.toggle('dark', dark); document.documentElement.dataset.theme = theme; localStorage.setItem('fi_dark', dark ? '1' : '0'); localStorage.setItem('fi_theme', theme); }, [dark, theme]);
   useEffect(() => { // live signals: unread counts + incoming calls
     let alive = true;
     const tick = async () => {
@@ -2448,6 +1976,22 @@ function Shell({ user, onLogout, onUser }) {
     tick(); const t = setInterval(tick, 6000);
     return () => { alive = false; clearInterval(t); };
   }, [load]);
+
+  useEffect(() => {
+    const handleKeyDown = e => {
+      if (e.key === 'Escape') setMobile(false);
+    };
+    const handleResize = () => {
+      if (window.innerWidth > 768) setMobile(false);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   const incoming = poll.incoming_call && !call && !handled.current.has(poll.incoming_call.id) ? poll.incoming_call : null;
   const startCall = async (contact, kind) => {
     try {
@@ -2483,11 +2027,13 @@ function Shell({ user, onLogout, onUser }) {
     return <Overview {...props} dash={dash} notifications={notifications} />;
   };
   return <div className={`app-v2 theme-${theme}`}><div className="ambient"><i /><i /><i /></div>
+    {mobile && <div className="sidebar-backdrop" onClick={() => setMobile(false)} aria-label="Close navigation sidebar" />}
     <aside className={`sidebar-v2 ${mobile ? 'open' : ''}`}>
       <div className="side-top">
         <button
           type="button"
           onClick={() => {
+            setMobile(false);
             window.history.pushState(null, '', '/');
             window.dispatchEvent(new PopStateEvent('popstate'));
           }}
@@ -2496,7 +2042,7 @@ function Shell({ user, onLogout, onUser }) {
         >
           <Logo light />
         </button>
-        <button className="mobile-close" onClick={() => setMobile(false)}>×</button>
+        <button className="mobile-close" onClick={() => setMobile(false)} aria-label="Close sidebar">×</button>
         <div className={`workspace-tag ${role.color}`}>
           <span>{role.icon}</span>
           <div><b>{role.label}</b><small>{role.tagline}</small></div>
@@ -2512,20 +2058,13 @@ function Shell({ user, onLogout, onUser }) {
           type="button"
           className="sidebar-home-link"
           onClick={() => {
+            setMobile(false);
             window.history.pushState(null, '', '/');
             window.dispatchEvent(new PopStateEvent('popstate'));
           }}
           title="Return to Landing Page"
         >
           <span>⌂</span>Public Home
-        </button>
-        <button
-          type="button"
-          className="sidebar-logout-btn"
-          onClick={onLogout}
-          title="Sign out of FarmIntern"
-        >
-          <span>↪</span>Sign out
         </button>
       </nav>
       <div className="theme-dock">
@@ -2538,14 +2077,14 @@ function Shell({ user, onLogout, onUser }) {
         </div>
       </div>
       <div className="side-bottom">
-        <button type="button" className="sidebar-logout-btn" onClick={onLogout}>
+        <button type="button" className="sidebar-logout-btn" onClick={() => { setMobile(false); onLogout(); }} title="Sign out of FarmIntern">
           <span>↪</span>Sign out
         </button>
       </div>
     </aside>
     <div className="main-v2">
       <header className="top-v2">
-        <button className="hamb" onClick={() => setMobile(true)}>☰</button>
+        <button className="hamb" onClick={() => setMobile(true)} aria-label="Open sidebar navigation">☰</button>
         <div className="crumb">
           <small>{role.label}</small>
           <b>{page === 'notifications' ? 'Notifications' : nav.find(x => x[0] === page)?.[1] || 'Overview'}</b>

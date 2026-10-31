@@ -5,9 +5,14 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent  # backend/
 
-try:  # optional: load backend/.env when python-dotenv is installed
+try:  # load .env from root or backend directory
     from dotenv import load_dotenv
-    load_dotenv(BASE_DIR / ".env")
+    root_env = BASE_DIR.parent / ".env"
+    backend_env = BASE_DIR / ".env"
+    if root_env.exists():
+        load_dotenv(root_env)
+    if backend_env.exists() and backend_env.resolve() != root_env.resolve():
+        load_dotenv(backend_env, override=False)
 except Exception:  # pragma: no cover
     pass
 
@@ -83,9 +88,9 @@ EXPOSE_RESET_LINK = _bool("EXPOSE_RESET_LINK", not IS_PROD)
 FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173").rstrip("/")
 SMTP_HOST = os.getenv("SMTP_HOST", "")
 SMTP_PORT = int(os.getenv("SMTP_PORT", "587") or 587)
-SMTP_USER = os.getenv("SMTP_USER", "")
-SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "")
-SMTP_FROM = os.getenv("SMTP_FROM", SMTP_USER or "no-reply@farmintern.local")
+SMTP_USER = os.getenv("SMTP_USER", "").strip()
+SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "").replace(" ", "").strip()
+SMTP_FROM = os.getenv("SMTP_FROM", SMTP_USER or "no-reply@farmintern.local").strip()
 
 # Unverified farmers may not publish internships when this is on (default on in production).
 REQUIRE_FARMER_VERIFICATION = _bool("REQUIRE_FARMER_VERIFICATION", IS_PROD)

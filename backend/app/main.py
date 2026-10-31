@@ -12,7 +12,8 @@ import time
 from collections import defaultdict
 from datetime import date, datetime, timedelta
 from email.message import EmailMessage
-from typing import List, Optional
+import email.utils
+from typing import Optional
 
 from fastapi import (BackgroundTasks, Depends, FastAPI, HTTPException, Query, Request, WebSocket,
                      WebSocketDisconnect)
@@ -102,7 +103,6 @@ class GoogleAuth(In):
 
 class ForgotPassword(In):
     email: str = Field(default="", max_length=2000)
-    emails: Optional[List[str]] = None
 
 
 class ResetPassword(In):
@@ -388,17 +388,21 @@ def admin_login(data: Login, request: Request, db: Session = Depends(get_db)):
 
 @app.post("/api/auth/register")
 def register(data: Register, db: Session = Depends(get_db)):
-    role = data.role.lower()
+    role = data.role.lower().strip()
     if role not in SELF_REGISTER_ROLES:
         raise HTTPException(400, "Invalid role")
-    email = data.email.lower()
+    email = data.email.lower().strip()
     if db.query(User).filter(func.lower(User.email) == email).first():
         raise HTTPException(409, "Email already registered")
-    u = User(name=data.name, email=email, password_hash=hash_password(data.password), role=role,
+    u = User(name=data.name.strip(), email=email, password_hash=hash_password(data.password), role=role,
              verified=False, active=True)
     db.add(u)
     db.flush()
-    db.add(Profile(user_id=u.id, institution=data.institution))
+    prof = db.query(Profile).filter_by(user_id=u.id).first()
+    if prof:
+        prof.institution = data.institution or prof.institution
+    else:
+        db.add(Profile(user_id=u.id, institution=data.institution))
     db.commit()
     return {"token": create_token(u), "user": user_json(u)}
 
@@ -452,13 +456,19 @@ def google_auth(data: GoogleAuth, db: Session = Depends(get_db)):
         active=True
     )
     db.add(u)
-    db.flush()
-    db.add(Profile(
-        user_id=u.id,
-        institution="Agricultural Partner",
-        headline=f"Google Certified {role.title()}",
-        bio="Verified member via Google Single Sign-On."
-    ))
+    db.flush()  # Generate the user ID before creating the profile
+    prof = db.query(Profile).filter_by(user_id=u.id).first()
+    if prof:
+        prof.institution = prof.institution or "Agricultural Partner"
+        prof.headline = prof.headline or f"Google Certified {role.title()}"
+        prof.bio = prof.bio or "Verified member via Google Single Sign-On."
+    else:
+        db.add(Profile(
+            user_id=u.id,
+            institution="Agricultural Partner",
+            headline=f"Google Certified {role.title()}",
+            bio="Verified member via Google Single Sign-On."
+        ))
     db.commit()
     return {"token": create_token(u), "user": user_json(u)}
 
@@ -474,69 +484,125 @@ def google_suggested_accounts():
 
 
 
-def _send_reset_email(to, link):
-    if not config.SMTP_HOST or not config.SMTP_USER:
+def _send_reset_email(to: str, link: str) -> bool:
+    host = config.SMTP_HOST.strip() if config.SMTP_HOST else ""
+    user = config.SMTP_USER.strip() if config.SMTP_USER else ""
+    password = (config.SMTP_PASSWORD or "").strip().replace(" ", "")
+    port = config.SMTP_PORT or 587
+
+    if not host or not user or not password:
         log.warning("SMTP not configured with host and user; email for %s skipped. Set SMTP_USER and SMTP_PASSWORD in backend/.env", to)
-        return False
+        raise RuntimeError("SMTP email service is not configured on the server.")
+
+    recipient = to.strip().lower()
+    if "@" not in recipient or "." not in recipient.split("@")[-1]:
+        raise ValueError(f"Invalid email recipient: {to}")
+
+    domain = recipient.split("@")[-1]
+    if domain in ("farmintern.local", "localhost", "test.local", "example.com"):
+        raise ValueError(f"Cannot send live email to internal domain '@{domain}'. Please use a valid registered email address (e.g., @gmail.com).")
+
+    sender = user
     msg = EmailMessage()
-    sender = config.SMTP_USER if config.SMTP_USER else "no-reply@farmintern.local"
-    msg["From"] = f"FarmIntern Platform <{sender}>"
-    msg["To"] = to
-    msg.set_content(f"""Hello,
+    msg["Subject"] = "FarmIntern password reset link"
+    msg["From"] = f"FarmIntern <{sender}>"
+    msg["To"] = recipient
+    msg["Reply-To"] = sender
+    msg["Date"] = email.utils.formatdate(localtime=True)
 
-We received a request to reset your password for your FarmIntern account ({to}).
+    plain_text = f"""Hello,
 
-Use the secure link below to set your password (valid for 30 minutes):
+We received a request to update the password for your FarmIntern account ({recipient}).
+
+To set a new password, click or copy the link below into your browser (link expires in 30 minutes):
 {link}
 
-If you did not request this, please disregard this email.
+If you did not request a password reset, you can safely ignore this email.
 
-Best regards,
-FarmIntern Platform Security
-""")
-    msg.add_alternative(f"""<!DOCTYPE html>
-<html>
-<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f4f6f2; padding: 30px; margin: 0;">
-  <div style="max-width: 540px; margin: 0 auto; background: #ffffff; border-radius: 16px; border: 1px solid #dbe2d9; padding: 32px; box-shadow: 0 10px 30px rgba(0,0,0,0.04);">
-    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 20px;">
-      <span style="background: #0f1d15; color: #b7ed68; font-weight: 800; font-size: 15px; padding: 6px 10px; border-radius: 8px;">FI</span>
-      <span style="font-size: 18px; font-weight: 800; color: #17241b;">FarmIntern Platform</span>
-    </div>
-    <h2 style="color: #17241b; margin: 0 0 12px; font-size: 22px;">Reset your password</h2>
-    <p style="color: #57695e; font-size: 14.5px; line-height: 1.6; margin: 0 0 24px;">
-      A password reset was requested for your FarmIntern account: <strong>{to}</strong>. Click the button below to choose your new password:
-    </p>
-    <div style="text-align: center; margin: 28px 0;">
-      <a href="{link}" style="display: inline-block; background: #1e8b50; color: #ffffff; text-decoration: none; font-weight: 700; font-size: 14.5px; padding: 13px 28px; border-radius: 10px; box-shadow: 0 4px 12px rgba(30,139,80,0.2);">Reset Password →</a>
-    </div>
-    <p style="color: #788a7e; font-size: 12.5px; line-height: 1.5; margin: 0 0 18px;">
-      Or copy and paste this link into your browser:<br/>
-      <a href="{link}" style="color: #1e8b50; word-break: break-all;">{link}</a>
-    </p>
-    <p style="color: #9ab0a1; font-size: 12px; margin: 0; border-top: 1px solid #eef2ec; padding-top: 16px;">
-      This link expires in 30 minutes. If you did not request this, you can safely ignore this email.
-    </p>
-  </div>
+Thank you,
+FarmIntern Team
+"""
+    msg.set_content(plain_text)
+
+    html_content = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Reset your password</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f7faf8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #f7faf8; padding: 25px 15px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="max-width: 520px; background-color: #ffffff; border-radius: 12px; border: 1px solid #dbe5de; overflow: hidden;">
+          <tr>
+            <td style="padding: 24px 28px 16px; border-bottom: 1px solid #eef3ef;">
+              <span style="font-size: 18px; font-weight: 700; color: #1c3324;">FarmIntern</span>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 28px 28px 24px;">
+              <h2 style="margin: 0 0 14px; font-size: 20px; font-weight: 700; color: #1c3324;">Reset your password</h2>
+              <p style="margin: 0 0 16px; font-size: 14.5px; line-height: 1.5; color: #3f5245;">
+                Hello,
+              </p>
+              <p style="margin: 0 0 20px; font-size: 14.5px; line-height: 1.5; color: #3f5245;">
+                A password reset was requested for your FarmIntern account: <strong style="color: #1c3324;">{recipient}</strong>. Click below to choose your new password:
+              </p>
+              <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin: 22px 0;">
+                <tr>
+                  <td align="center" style="border-radius: 8px; background-color: #1e8b50;">
+                    <a href="{link}" target="_blank" style="display: inline-block; padding: 12px 28px; font-size: 14.5px; font-weight: 700; color: #ffffff; text-decoration: none; border-radius: 8px; background-color: #1e8b50;">Choose New Password →</a>
+                  </td>
+                </tr>
+              </table>
+              <p style="margin: 0 0 6px; font-size: 13px; color: #627468;">
+                Or paste this link into your browser:
+              </p>
+              <p style="margin: 0 0 20px; font-size: 12px; line-height: 1.4; word-break: break-all;">
+                <a href="{link}" target="_blank" style="color: #1e8b50; text-decoration: underline;">{link}</a>
+              </p>
+              <div style="border-top: 1px solid #edf2ee; padding-top: 16px;">
+                <p style="margin: 0; font-size: 12px; color: #7f9184;">
+                  This link expires in 30 minutes. If you did not make this request, you can safely ignore this email.
+                </p>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 16px 28px; background-color: #fbfdfb; border-top: 1px solid #edf2ee; text-align: center;">
+              <p style="margin: 0; font-size: 11.5px; color: #8e9f93;">
+                FarmIntern Platform
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
 </body>
-</html>""", subtype="html")
+</html>"""
+    msg.add_alternative(html_content, subtype="html")
 
     try:
-        if config.SMTP_PORT == 465:
-            with smtplib.SMTP_SSL(config.SMTP_HOST, config.SMTP_PORT, timeout=15) as s:
-                if config.SMTP_USER and config.SMTP_PASSWORD:
-                    s.login(config.SMTP_USER, config.SMTP_PASSWORD)
-                s.send_message(msg)
+        if port == 465:
+            with smtplib.SMTP_SSL(host, port, timeout=15) as s:
+                s.login(user, password)
+                refused = s.send_message(msg)
+                if refused:
+                    raise RuntimeError(f"Email rejected for recipient(s): {list(refused.keys())}")
         else:
-            with smtplib.SMTP(config.SMTP_HOST, config.SMTP_PORT, timeout=15) as s:
+            with smtplib.SMTP(host, port, timeout=15) as s:
                 s.starttls()
-                if config.SMTP_USER and config.SMTP_PASSWORD:
-                    s.login(config.SMTP_USER, config.SMTP_PASSWORD)
-                s.send_message(msg)
-        log.info("Reset email successfully sent to %s", to)
+                s.login(user, password)
+                refused = s.send_message(msg)
+                if refused:
+                    raise RuntimeError(f"Email rejected for recipient(s): {list(refused.keys())}")
+        log.info("Reset email successfully sent to %s", recipient)
         return True
     except Exception as e:
-        log.exception("could not send reset email to %s: %s", to, e)
-        return False
+        log.exception("could not send reset email to %s: %s", recipient, e)
+        raise
 
 
 def save_smtp_env(host: str, port: int, user: str, password: str):
@@ -546,44 +612,54 @@ def save_smtp_env(host: str, port: int, user: str, password: str):
     config.SMTP_PASSWORD = password
     config.SMTP_FROM = f"FarmIntern Platform <{user}>"
 
-    env_path = config.BASE_DIR / ".env"
-    lines = []
-    if env_path.exists():
-        lines = env_path.read_text().splitlines()
+    target_files = [config.BASE_DIR.parent / ".env", config.BASE_DIR / ".env"]
+    saved_paths = set()
+    for env_path in target_files:
+        try:
+            real_p = env_path.resolve()
+            if real_p in saved_paths:
+                continue
+            saved_paths.add(real_p)
 
-    new_lines = []
-    keys_written = set()
-    for line in lines:
-        if line.startswith("SMTP_HOST="):
-            new_lines.append(f"SMTP_HOST={host}")
-            keys_written.add("SMTP_HOST")
-        elif line.startswith("SMTP_PORT="):
-            new_lines.append(f"SMTP_PORT={port}")
-            keys_written.add("SMTP_PORT")
-        elif line.startswith("SMTP_USER="):
-            new_lines.append(f"SMTP_USER={user}")
-            keys_written.add("SMTP_USER")
-        elif line.startswith("SMTP_PASSWORD="):
-            new_lines.append(f"SMTP_PASSWORD={password}")
-            keys_written.add("SMTP_PASSWORD")
-        elif line.startswith("SMTP_FROM="):
-            new_lines.append(f"SMTP_FROM=FarmIntern Platform <{user}>")
-            keys_written.add("SMTP_FROM")
-        else:
-            new_lines.append(line)
+            lines = []
+            if real_p.exists():
+                lines = real_p.read_text().splitlines()
 
-    if "SMTP_HOST" not in keys_written:
-        new_lines.append(f"SMTP_HOST={host}")
-    if "SMTP_PORT" not in keys_written:
-        new_lines.append(f"SMTP_PORT={port}")
-    if "SMTP_USER" not in keys_written:
-        new_lines.append(f"SMTP_USER={user}")
-    if "SMTP_PASSWORD" not in keys_written:
-        new_lines.append(f"SMTP_PASSWORD={password}")
-    if "SMTP_FROM" not in keys_written:
-        new_lines.append(f"SMTP_FROM=FarmIntern Platform <{user}>")
+            new_lines = []
+            keys_written = set()
+            for line in lines:
+                if line.startswith("SMTP_HOST="):
+                    new_lines.append(f"SMTP_HOST={host}")
+                    keys_written.add("SMTP_HOST")
+                elif line.startswith("SMTP_PORT="):
+                    new_lines.append(f"SMTP_PORT={port}")
+                    keys_written.add("SMTP_PORT")
+                elif line.startswith("SMTP_USER="):
+                    new_lines.append(f"SMTP_USER={user}")
+                    keys_written.add("SMTP_USER")
+                elif line.startswith("SMTP_PASSWORD="):
+                    new_lines.append(f"SMTP_PASSWORD={password}")
+                    keys_written.add("SMTP_PASSWORD")
+                elif line.startswith("SMTP_FROM="):
+                    new_lines.append(f"SMTP_FROM=FarmIntern Platform <{user}>")
+                    keys_written.add("SMTP_FROM")
+                else:
+                    new_lines.append(line)
 
-    env_path.write_text("\n".join(new_lines) + "\n")
+            if "SMTP_HOST" not in keys_written:
+                new_lines.append(f"SMTP_HOST={host}")
+            if "SMTP_PORT" not in keys_written:
+                new_lines.append(f"SMTP_PORT={port}")
+            if "SMTP_USER" not in keys_written:
+                new_lines.append(f"SMTP_USER={user}")
+            if "SMTP_PASSWORD" not in keys_written:
+                new_lines.append(f"SMTP_PASSWORD={password}")
+            if "SMTP_FROM" not in keys_written:
+                new_lines.append(f"SMTP_FROM=FarmIntern Platform <{user}>")
+
+            real_p.write_text("\n".join(new_lines) + "\n")
+        except Exception as e:
+            log.warning("Could not write to %s: %s", env_path, e)
 
 
 @app.get("/api/auth/smtp-status")
@@ -605,7 +681,7 @@ def get_smtp_status():
 
 
 @app.post("/api/auth/smtp-configure")
-def configure_smtp(data: SMTPSetup):
+def configure_smtp(data: SMTPSetup, admin_user=Depends(require_roles("admin"))):
     user = data.user.strip()
     password = data.password.strip().replace(" ", "")
     host = data.host.strip() or "smtp.gmail.com"
@@ -634,114 +710,102 @@ def configure_smtp(data: SMTPSetup):
     }
 
 
+RESET_TOKEN_TTL_MINUTES = 30
+_SINGLE_EMAIL_RE = re.compile(r"^[^@\s,;<>()\[\]\\\"]+@[^@\s,;<>()\[\]\\\"]+\.[^@\s,;<>()\[\]\\\"]+$")
+
+
+def _single_email(raw: str) -> str:
+    """Return one normalised email address, or raise 400. Lists of addresses are rejected."""
+    value = (raw or "").strip().lower()
+    if not value:
+        raise HTTPException(400, "Please enter your registered email address.")
+    if re.search(r"[,;\s]", value) or value.count("@") > 1:
+        raise HTTPException(400, "Please enter only one email address.")
+    if not _SINGLE_EMAIL_RE.match(value):
+        raise HTTPException(400, "Please enter a valid email address.")
+    return value
+
+
+def _reset_base_url(request: Request) -> str:
+    """Origin used to build the reset link. A caller-supplied Origin header is only trusted when it is
+    one of the configured frontend origins, so a forged header cannot point the e-mailed link elsewhere."""
+    trusted = {config.FRONTEND_URL.rstrip("/"), *config.CORS_ORIGINS}
+    origin = (request.headers.get("origin") or "").strip().rstrip("/")
+    if origin and origin in trusted:
+        return origin
+    return (config.FRONTEND_URL or "http://localhost:5173").rstrip("/")
+
+
 @app.post("/api/auth/forgot-password")
-def forgot_password(data: ForgotPassword, background: BackgroundTasks, db: Session = Depends(get_db)):
-    # Parse requested emails from data.emails list or data.email string
-    raw_tokens = []
-    if data.emails:
-        raw_tokens.extend(data.emails)
-    if data.email:
-        raw_tokens.extend(re.split(r'[,;\s\n]+', data.email.strip()))
+def forgot_password(data: ForgotPassword, request: Request, db: Session = Depends(get_db)):
+    em = _single_email(data.email)
 
-    requested_emails = []
-    for raw in raw_tokens:
-        em = raw.strip().lower()
-        if not em:
-            continue
-        if "@" not in em or "." not in em.split("@")[-1]:
-            raise HTTPException(400, f"Invalid email format: '{raw}'. Please provide valid email address(es).")
-        if em not in requested_emails:
-            requested_emails.append(em)
-
-    if not requested_emails:
-        raise HTTPException(400, "Please provide at least one email address.")
-
-    # Process all requested emails: ensure all are valid, registered accounts in FarmIntern
-    registered_users = []
-    deactivated_emails = []
-
-    for em in requested_emails:
-        u = db.query(User).filter(func.lower(User.email) == em).first()
-        if not u:
-            # Auto-register / provision this account so ALL requested emails work seamlessly!
-            temp_pw = secrets.token_urlsafe(32)
-            u = User(
-                name=em.split("@")[0].capitalize(),
-                email=em,
-                password_hash=hash_password(temp_pw),
-                role="student",
-                verified=True,
-                active=True
-            )
-            db.add(u)
-            db.flush()
-            db.add(Profile(user_id=u.id, institution="Agricultural Partner", bio="Active member"))
-            db.commit()
-
-        if not u.active:
-            deactivated_emails.append(em)
-        else:
-            registered_users.append(u)
-
-    if deactivated_emails:
-        raise HTTPException(
-            403,
-            f"The account for {', '.join(deactivated_emails)} has been deactivated. Please contact support."
-        )
+    u = db.query(User).filter(func.lower(User.email) == em).first()
+    if not u:  # never auto-create an account from a reset request
+        raise HTTPException(404, "No account is registered with this email address.")
+    if not u.active:
+        raise HTTPException(403, "This account has been deactivated. Please contact support.")
 
     has_smtp = bool(config.SMTP_HOST and config.SMTP_USER and config.SMTP_PASSWORD)
-    results = []
+    expose_link = bool(config.EXPOSE_RESET_LINK and not has_smtp)  # never when SMTP delivers the e-mail
+    if not has_smtp and not expose_link:
+        # Nothing could deliver the link, so do not create a token that nobody can use.
+        log.error("Password reset requested but SMTP is not configured and link exposure is off.")
+        raise HTTPException(503, "Password reset e-mail is temporarily unavailable. Please try again later.")
 
-    for u in registered_users:
-        # Invalidate previous tokens
-        db.query(PasswordResetToken).filter(
-            PasswordResetToken.user_id == u.id,
-            PasswordResetToken.used == False  # noqa: E712
-        ).update({"used": True})
+    token = secrets.token_urlsafe(48)
+    new_row = PasswordResetToken(user_id=u.id, token=token,
+                                 expires_at=utcnow() + timedelta(minutes=RESET_TOKEN_TTL_MINUTES), used=False)
+    db.add(new_row)
+    db.commit()
+    new_id, user_id, user_email, user_name, user_role = new_row.id, u.id, u.email, u.name, u.role
+    reset_url = f"{_reset_base_url(request)}/reset-password?token={token}"
 
-        token = secrets.token_urlsafe(48)
-        db.add(PasswordResetToken(
-            user_id=u.id,
-            token=token,
-            expires_at=utcnow() + timedelta(minutes=30),
-            used=False
-        ))
-        db.flush()
+    if has_smtp:
+        try:
+            _send_reset_email(user_email, reset_url)
+        except Exception:
+            log.exception("SMTP delivery failed for %s", user_email)
+            # The link never reached the user: remove the new token (earlier tokens are left as they were).
+            try:
+                db.query(PasswordResetToken).filter(PasswordResetToken.id == new_id).delete(synchronize_session=False)
+                db.commit()
+            except Exception:
+                db.rollback()
+                log.exception("could not delete unsent reset token; marking it used instead")
+                try:
+                    db.query(PasswordResetToken).filter(PasswordResetToken.id == new_id).update({"used": True})
+                    db.commit()
+                except Exception:
+                    db.rollback()
+                    log.exception("could not invalidate unsent reset token %s", new_id)
+            raise HTTPException(502, "We could not send the reset email right now. Please try again later.")
+    else:
+        log.warning("SMTP not configured (development). Reset link for %s: %s", user_email, reset_url)
 
-        reset_url = f"{config.FRONTEND_URL}/reset-password?token={token}"
-        if has_smtp:
-            background.add_task(_send_reset_email, u.email, reset_url)
-
-        results.append({
-            "email": u.email,
-            "name": u.name,
-            "role": u.role,
-            "token": token,
-            "reset_url": f"/reset-password?token={token}",
-            "full_url": reset_url,
-        })
-
+    # The new link is live: retire every earlier unused token so only the newest one works.
+    db.query(PasswordResetToken).filter(
+        PasswordResetToken.user_id == user_id,
+        PasswordResetToken.used == False,  # noqa: E712
+        PasswordResetToken.id != new_id,
+    ).update({"used": True}, synchronize_session=False)
     db.commit()
 
-    email_names = ", ".join(r["email"] for r in results)
     if has_smtp:
-        msg = f"A password reset link has been dispatched to {len(results)} email inbox(es): {email_names}."
+        msg = f"A password reset link has been sent to {user_email}. It expires in {RESET_TOKEN_TTL_MINUTES} minutes."
     else:
-        msg = f"Password reset link generated for {len(results)} account(s): {email_names}."
-
+        msg = f"Password reset link generated for {user_email}. It expires in {RESET_TOKEN_TTL_MINUTES} minutes."
     return {
+        "ok": True,
         "message": msg,
-        "count": len(results),
-        "emails": [r["email"] for r in results],
-        "results": results,
-        # Backward compatibility for single-user callers
-        "email": results[0]["email"],
-        "token": results[0]["token"],
-        "reset_url": results[0]["reset_url"],
-        "full_url": results[0]["full_url"],
-        "smtp_configured": has_smtp
+        "email": user_email,
+        "name": user_name,
+        "role": user_role,
+        "token": token if expose_link else None,
+        "reset_url": f"/reset-password?token={token}" if expose_link else None,
+        "full_url": reset_url if expose_link else None,
+        "smtp_configured": has_smtp,
     }
-
 
 
 @app.post("/api/auth/reset-password")
