@@ -107,6 +107,11 @@ def test_messages_and_calls(world):
 
 def test_password_reset_and_profile(world):
     w = world
+    # Unregistered email should fail with 404 and clear message
+    unreg_res = client.post("/api/auth/forgot-password", json={"email": "unregistered@t.io"})
+    assert unreg_res.status_code == 404
+    assert "no account is registered" in unreg_res.json()["detail"].lower()
+
     r = client.post("/api/auth/forgot-password", json={"email": "sue@t.io"}).json()
     token = r["reset_url"].split("token=")[1]
     assert client.post("/api/auth/reset-password", json={"token": token, "password": "weak"}).status_code == 422

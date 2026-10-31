@@ -37,9 +37,9 @@ def run_migrations():
                                   "ON applications (internship_id, student_id)"))
         except Exception as exc:  # duplicates from legacy data: leave the data untouched
             log.warning("could not create unique application index: %s", exc)
+
+
     backfill_placements()
-
-
 def backfill_placements():
     db = SessionLocal()
     try:

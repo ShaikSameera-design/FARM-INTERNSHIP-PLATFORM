@@ -789,15 +789,16 @@ function AdminLogin({ onLogin, onBack }) {
 
         <form onSubmit={submit} className="admin-form">
           <label>
-            Administrative Email
+            Username
             <input
               value={email}
               onChange={e => setEmail(e.target.value)}
-              type="email"
+              type="text"
               required
               autoFocus
-              autoComplete="off"
-              placeholder="Enter admin email"
+
+              autoComplete="username"
+              placeholder="Enter admin username or email"
             />
           </label>
           <label>
@@ -909,12 +910,14 @@ function PasswordReset({ onBack, initialToken = '' }) {
         method: 'POST',
         body: JSON.stringify({ email: email.trim() })
       });
+
       setSentInfo({
         email: d.email || email.trim(),
         name: d.name || '',
         message: d.message,
         smtp_configured: d.smtp_configured
       });
+
       setMessage(d.message || `Password reset link dispatched.`);
     } catch (err) {
       setError(err.message);
@@ -977,10 +980,12 @@ function PasswordReset({ onBack, initialToken = '' }) {
                 <label>
                   Registered email address
                   <span style={{ display: 'block', fontSize: '12px', color: '#687e70', fontWeight: 400, marginTop: '2px', marginBottom: '8px' }}>
-                    Enter the one email address registered with your account.
+
+                    Enter your registered email address to receive a secure password reset link.
                   </span>
                   <input
                     type="email"
+
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     placeholder="e.g. your_email@gmail.com"
@@ -1006,6 +1011,7 @@ function PasswordReset({ onBack, initialToken = '' }) {
               <div style={{ background: '#f7faf8', padding: '22px', borderRadius: '16px', border: '1px solid #d4e2d8' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#1e8b50', fontWeight: '800', marginBottom: '8px' }}>
                   <span style={{ fontSize: '18px' }}>✓</span>
+
                   <span>Password reset link sent</span>
                 </div>
                 <p style={{ margin: '0 0 16px', fontSize: '13.5px', color: '#3d4d42', lineHeight: '1.5' }}>
@@ -1013,6 +1019,7 @@ function PasswordReset({ onBack, initialToken = '' }) {
                 </p>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '16px' }}>
+
                   {[{ email: sentInfo.email, name: sentInfo.name }].map(item => (
                     <div
                       key={item.email}

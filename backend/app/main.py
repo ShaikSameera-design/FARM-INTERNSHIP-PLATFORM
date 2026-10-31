@@ -376,7 +376,14 @@ def admin_login(data: Login, request: Request, db: Session = Depends(get_db)):
     _failed[key] = [t for t in _failed[key] if now - t < WINDOW]
     if len(_failed[key]) >= MAX_FAILS:
         raise HTTPException(429, "Too many failed attempts. Try again in a few minutes.")
-    u = db.query(User).filter(func.lower(User.email) == data.email.strip().lower()).first()
+    ident = data.email.strip().lower()
+    u = db.query(User).filter(
+        User.role == "admin",
+        (
+            (func.lower(User.email) == ident) |
+            (func.lower(User.name) == ident)
+        )
+    ).first()
     if not u or not verify_password(data.password, u.password_hash) or u.role != "admin":
         _failed[key].append(now)
         raise HTTPException(401, "Invalid administrative credentials.")
